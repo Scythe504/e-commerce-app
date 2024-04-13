@@ -9,7 +9,7 @@ export default function SocialsButton(){
         className="w-full"
         variant={"outline"}
         >
-            <FcGoogle className="h-5 "/>&nbsp;&nbsp;Continue With Google
+            <FcGoogle className="h-7" size={"40"}/>&nbsp;&nbsp;Continue With Google
         </Button>
     </div>
 }

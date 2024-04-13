@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import pattern from "../../../../public/topography.svg"
 import LoginCard from "./login-card";

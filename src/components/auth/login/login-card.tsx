@@ -1,23 +1,18 @@
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+"use client"
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import SocialsButton from "./socials";
-import { Button } from "@/components/ui/button";
+import LoginForm from "./loginForm";
 
 export default function LoginCard (){
     return <Card className="h-full flex flex-col items-center justify-center">
         <CardHeader className="text-4xl font-semibold">Welcome</CardHeader>
-        <CardContent>
-            <div>
+        <CardContent className="w-96">
+            <div className="mb-6">
             <SocialsButton/>
             </div>
             <div>
-                <legend>Or</legend>
+                <LoginForm/>
             </div>
-            
         </CardContent>
-        <CardFooter>
-            <Button>
-                Login
-            </Button>
-        </CardFooter>
     </Card>
 }
