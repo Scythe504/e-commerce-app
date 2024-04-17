@@ -14,26 +14,29 @@ datasource db {
 }
 
 model User {
-  id String @id @default(cuid())
-  email String @unique
-  password String
-  signInCredentials methodSignin
-  purchases Purchase[]
+  id                 String       @id @default(cuid())
+  email              String       @unique
+  password           String
+  signInCredentials  methodSignin @default(EMAIL)
+  emailVerified      Boolean      @default(false)
+  dateOfVerification DateTime
+  purchases          Purchase[]
 }
 
 model Purchase {
-  id String @id @default(cuid())
-  items_purchase String[] 
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  item Item[]
+  id             String   @id @default(cuid())
+  items_purchase String[]
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item           Item[]
   dateOfPurchase DateTime
+
   @@unique([userId])
 }
 
 model Item {
-  id String @id @default(cuid())
-  userId String
+  id       String   @id @default(cuid())
+  userId   String
   purchase Purchase @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
