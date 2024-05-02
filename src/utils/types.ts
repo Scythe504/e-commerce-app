@@ -11,3 +11,9 @@ export const loginSchema = z.object({
         message : 'Password must be atleast 6 characters long'
     })
 })
+
+export const itemDetailsSchema = z.object({
+    title : z.string(),
+    description : z.string(),
+    price : z.string()
+})

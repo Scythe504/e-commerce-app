@@ -18,26 +18,51 @@ model User {
   email              String       @unique
   password           String
   signInCredentials  methodSignin @default(EMAIL)
-  emailVerified      Boolean      @default(false)
-  dateOfVerification DateTime
-  purchases          Purchase[]
+  emailVerified      Boolean?      @default(false)
+  dateOfVerification DateTime?
+  // purchases          Purchase[]
+  Cart               Cart?
 }
 
-model Purchase {
-  id             String   @id @default(cuid())
-  items_purchase String[]
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  item           Item[]
-  dateOfPurchase DateTime
+// model Purchase {
+//   id             String         @id @default(cuid())
+//   items_purchase String[]
+//   userId         String
+//   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   item           Item[]
+//   dateOfPurchase DateTime
+//   PurchaseItem   PurchaseItem[]
 
-  @@unique([userId])
-}
+//   @@unique([userId])
+// }
+
+// model PurchaseItem {
+//   id         String   @id @default(cuid())
+//   purchaseId String
+//   itemId     String
+//   purchase   Purchase @relation(fields: [purchaseId], references: [id])
+//   item       Item     @relation(fields: [itemId], references: [id])
+// }
 
 model Item {
-  id       String   @id @default(cuid())
-  userId   String
-  purchase Purchase @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String         @id @default(cuid())
+  title       String
+  description String?
+  price       Float
+  // purchase    PurchaseItem[]
+  // purchaseId  String?
+  // Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
+  cartId  String @default(cuid())
+  cart   Cart  @relation(fields: [cartId], references: [id])
+  @@unique([id, cartId])
+}
+
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  usersCart User       @relation(fields: [userId], references: [id])
+  items Item[]
 }
 
 enum methodSignin {

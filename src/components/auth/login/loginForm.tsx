@@ -15,9 +15,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { loginSchema } from "@/utils/types"
+import { signIn } from "next-auth/react"
 
 function onSubmit(){
-    console.log("Submitted")
+    signIn("credentials",{
+      callbackUrl : "/"
+    })
 }
 
 export default function LoginForm() {
@@ -29,6 +32,8 @@ export default function LoginForm() {
       password : ""
     },
   })
+
+
  
 
 

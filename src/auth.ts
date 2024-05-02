@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import db from "@/db/prisma"
 import authConfig from "@/auth.config"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { getUserById } from "./utils/getUser"
+import { getUserById } from "@/utils/getUser"
 
 
 export const {
@@ -10,51 +10,49 @@ export const {
     auth,
     signIn,
     signOut //@ts-ignore
-} = NextAuth ({
-    pages : {
-        signIn : "/auth/login",
-        error : "/auth/error"
-    }, events : {
-        async linkAccount( {user} ){
+} = NextAuth({
+    pages: {
+        signIn: "/auth/login",
+        error: "/auth/error"
+    }, events: {
+        async linkAccount({ user }) {
             await db.user.update({
-                where : {
-                    id : user.id
-                }, data : {
-                    emailVerified : true,
-                    dateOfVerification : new Date(),
+                where: {
+                    id: user.id
+                }, data: {
+                    emailVerified: true,
+                    dateOfVerification: new Date(),
                 }
             })
         }
-    }, 
-    callbacks : {
-        async signIn({ user, account}){
-            if(account?.provider !== "credentials") return true;
+    },
+    callbacks: {
+        async signIn({ user, account }) {
+            if (account?.provider !== "credentials") return true;
             //@ts-ignore
-            const existingUser = await getUserById(user.id);
             //prevent non-authorised email users to buy
 
             //2FA-logic
-
             return true
         },
-        async session({token, session }) {
-            if(token.sub && session.user) {
+        async session({ token, session }) {
+            if (token.sub && session.user) {
                 session.user.id = token.sub;
             }
             return session;
         },
-        async jwt ( {token} ) {
-            if(!token.sub){
+        async jwt({ token }) {
+            if (!token.sub) {
                 return token;
             }
             const existingUser = await getUserById(token.sub);
-            if(!existingUser){
+            if (!existingUser) {
                 return token;
             }
             return token;
         }
     },
-    adapter : PrismaAdapter(db),
-    session : { strategy : "jwt"},
+    adapter: PrismaAdapter(db),
+    session: { strategy: "jwt" },
     ...authConfig
 })
