@@ -52,8 +52,8 @@ model Item {
   // purchase    PurchaseItem[]
   // purchaseId  String?
   // Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
-  cartId  String @default(cuid())
-  cart   Cart  @relation(fields: [cartId], references: [id])
+  cartId  String?
+  cart   Cart?  @relation(fields: [cartId], references: [id])
   @@unique([id, cartId])
 }
 

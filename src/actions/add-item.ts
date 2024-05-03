@@ -20,6 +20,6 @@ export const publishProduct = async (values : z.infer<typeof itemDetailsSchema>)
         return { success: "Product has been published" }
     } catch (error) {
         console.error({ error })
-        return { error: "Product could not be published" }
+        return ({ error: "Product could not be published" })
     }
 }
