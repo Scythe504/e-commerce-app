@@ -6,13 +6,15 @@ export const SettingsPage = async ()=> {
     const session = await auth();
     return <div>
     {JSON.stringify(session)}
-    {/* <form action={
+    <form action={
         async()=>{
             "use server"
             await signOut();
         }
     }>
         <Button type="submit"> Sign Out</Button>
-    </form> */}
+    </form>
 </div>
 }
+
+export default SettingsPage;

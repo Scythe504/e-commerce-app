@@ -1,6 +1,6 @@
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import type { CredentialsSignin, NextAuthConfig } from "next-auth";
+import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google"
 import { loginSchema } from "./utils/types";
 import { getUserByEmail } from "./utils/getUser";
@@ -8,7 +8,7 @@ import { getUserByEmail } from "./utils/getUser";
 export default {
     providers: [
         Credentials({//@ts-ignore
-            async authorize(credentials: CredentialsSignin) {
+            async authorize(credentials) {
                 const validatedFields = loginSchema.safeParse(credentials);
                 if(!validatedFields.success){
                     return null;
@@ -21,7 +21,7 @@ export default {
                 const isPassword = bcrypt.compare(password, user.password);
 
                 if(!isPassword) return null;
-
+                console.log("user",{user});
                 return user;
             }
         }),

@@ -23,3 +23,7 @@ export const publishProduct = async (values : z.infer<typeof itemDetailsSchema>)
         return ({ error: "Product could not be published" })
     }
 }
+
+export const merchantLogin = ()=> {
+    //do the login logic for seller logic
+}

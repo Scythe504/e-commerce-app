@@ -4,56 +4,65 @@ import { getUserByEmail } from "@/utils/getUser"
 import { loginSchema } from "@/utils/types"
 import bcrypt from 'bcryptjs'
 import db from '@/db/prisma'
+import { z } from "zod"
+import { signIn } from "@/auth"
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 
-async function login({ email, password }: {
-    email: string,
-    password: string
-}) {
-    const validCredentials = loginSchema.safeParse({
-        email, password
-    })
-    if (!validCredentials) {
+export const login = async (values: z.infer<typeof loginSchema>) => {
+    const validCredentials = loginSchema.safeParse(values);
+    if (!validCredentials.success) {
         return {
-            message: "Invalid Credentials",
-            success: false
+            error: "Invalid Credentials",
         }
     }
+    const { email, password } = validCredentials.data;
     try {
         const user = await getUserByEmail(email);
         if (!user) {
-            return { message: "User Does Not Exist" }
+            return { error: "User Does Not Exist" }
         }
         const isValidPassword = bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return {
-                message: "Wrong Password",
-                success: false
+                error: "Wrong Password",
             }
         }
+        try {
+            await signIn("credentials",{
+                email,
+                password,
+                redirectTo: DEFAULT_LOGIN_REDIRECT
+            })
+        } catch (error) {
+            if(error){
+                // @ts-ignore
+                switch (error.type){
+                    case "CredentialsSignin": return { error: "Invalid Credentials" }
+                    default: 
+                    return { error : "Something went wrong!"}
+                }
+            }
+            throw error;
+        }
         return {
-            message: "Logged In Successfully",
-            success: true
+            success: "Logged In Successfully",
         }
     } catch (error) {
         console.error({ error })
         return {
-            message: "Some Error Occured"
+            error: "Some Error Occured"
         }
     }
 }
 
-async function register({ email, password }: {
-    email: string,
-    password: string
-}) {
-    const validCredentials = loginSchema.safeParse({ email, password });
-    if (!validCredentials) return { message: "Invalid Inputs", success: false };
-
+export const register = async (values: z.infer<typeof loginSchema>) => {
+    const validCredentials = loginSchema.safeParse(values);
+    if (!validCredentials.success) return { error: "Invalid Inputs"};
+    const { email, password } = validCredentials.data;
     const hashedPassword = await hashPassword(password);
-
     try {
         const user = await getUserByEmail(email);
-        if (user) return { message: "A user with your email id already exists" };
+        if (user) return { error: "A user with your email id already exists" };
 
         await db.user.create({
             data: {
@@ -61,12 +70,11 @@ async function register({ email, password }: {
                 password: hashedPassword
             }
         })
-        return { message: "User Created Successfully", success: true }
+        return { success: "User Created Successfully" }
     } catch (error) {
-        console.error({error})
+        console.error({ error })
         return {
-            message: "Some error occurred",
-            success: false
+            error: "Some error occurred",
         }
     }
 }

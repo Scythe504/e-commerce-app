@@ -31,26 +31,38 @@ export const {
             if (account?.provider !== "credentials") return true;
             //@ts-ignore
             //prevent non-authorised email users to buy
-
+            // const existingUser = await getUserById(user.id);
+            // if(!existingUser) return false;
             //2FA-logic
             return true
         },
         async session({ token, session }) {
-            if (token.sub && session.user) {
-                session.user.id = token.sub;
-            }
-            return session;
-        },
-        async jwt({ token }) {
-            if (!token.sub) {
-                return token;
-            }
-            const existingUser = await getUserById(token.sub);
-            if (!existingUser) {
-                return token;
-            }
-            return token;
-        }
+            console.log({
+                sessionToken: token,
+                session
+            })
+            // if(session.user){
+                //     //@ts-ignore
+                //     session.user.customField = token.customField;
+                // }
+                if (token.sub && session.user) {
+                    session.user.id = token.sub;
+                }
+                return session;
+            },
+            async jwt({ token }) {
+                // console.log({token})
+                // token.customField = 'testtoken'
+                if (!token.sub) {
+                    return token
+                }
+                const existingUser = await getUserById(token.sub)
+                if (!existingUser) {
+                    return token
+                }
+                return token
+            },
+            
     },
     adapter: PrismaAdapter(db),
     session: { strategy: "jwt" },

@@ -1,14 +1,12 @@
 import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
+// import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 import { FcGoogle } from "react-icons/fc"
 
 export default function SocialsButton(){
     const onClickHandler = (provider : string)=>{
         try {
-            signIn(provider, {
-                callbackUrl : DEFAULT_LOGIN_REDIRECT
-            })
+            signIn(provider)
         } catch (error) {
             console.error({error})
         }

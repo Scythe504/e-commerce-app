@@ -1,5 +1,5 @@
 "use client"
-import { publishProduct } from "@/actions/add-item";
+import { publishProduct } from "@/actions/merchant";
 import { FormError } from "@/components/results/error";
 import { FormSuccess } from "@/components/results/success";
 import { Button } from "@/components/ui/button";
