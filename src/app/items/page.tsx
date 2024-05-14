@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
-import getItems from "@/actions/seed"
+import { getAllItems } from "@/actions/seed"
+import ProductCard from "@/components/item-lists/item-card";
 
 type Item = {
   id: string;
@@ -14,7 +15,7 @@ type Item = {
 export default function Items() {
   const [items, setItems] = useState<Item[]>([])
   useEffect(() => {
-     getItems().then((e) => {
+     getAllItems().then((e) => {
       //@ts-ignore
       setItems(prevItems => [...prevItems, ...e])
       console.log("e:",{e})
@@ -24,11 +25,6 @@ export default function Items() {
   console.log("items:",{items});
   return <div className="text-center h-full w-full">
    
-      {items.map((item, index)=><div key={index}>
-        
-        {item.title}
-        <br />
-        {item.price}
-      </div>)}
+      {items.map((item, index)=><ProductCard key={index} title={item.title} description={item.description}/>)}
   </div>
 }

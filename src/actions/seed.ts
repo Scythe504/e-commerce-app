@@ -1,69 +1,119 @@
 "use server"
 
 import db from "@/db/prisma"
-// import { randomBytes } from "crypto";
 
-// const items = [
-//     {
-//         title: "Product1",  
-//         description: "Product description",
-//         price: 5000.20,
-//         cartId: randomBytes(32).toLocaleString()
-//     },
-//     {
-//         title: "Product1",
-//         description: "Product description",
-//         price: 5000.20,
-//         cartId: randomBytes(32).toLocaleString()
-//     },
-//     {
-//         title: "Product1",
-//         description: "Product description",
-//         price: 5000.20,
-//         cartId: randomBytes(32).toLocaleString()
-//     },
-//     {
-//         title: "Product1",
-//         description: "Product description",
-//         price: 5000.20,
-//         cartId: randomBytes(32).toLocaleString()
-//     },
-//     {
-//         title: "Product1",
-//         description: "Product description",
-//         price: 5000.20,
-//         cartId: randomBytes(32).toLocaleString()
-//     },
-//     {
-//         title: "Product1",
-//         description: "Product description",
-//         price: 5000.20,
-//         cartId: randomBytes(32).toLocaleString()
-//     },
+interface item {
+	title: string;
+	description: string;
+	price: number;
+}
 
-// ]
+const items: item[] = [
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
 
-// export const itemList = async () => {
-//     try {
-//         const itemsList = await db.cart.findMany();
-//         if (itemsList.length !== 0) return;
-//         await db.item.createMany({ data: items });
-//         const bulkItem = await db.item.findMany();
-//         console.log({ bulkItem });
-//         return bulkItem;
-//     } catch (error) {
-//         console.error({ error })
-//     }
-// }
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
 
-async function getItems() {
-    try {
-      const itemsList = await db.item.findMany();
-      return itemsList
-    } catch (e) {
-      console.log("error" + e)
-      return []
-    }
-  }
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
+	},
+	{
+		title: "Product1",
+		description: "Product description",
+		price: 5000.20,
 
-export default getItems;
+	},
+
+]
+
+async function seedItems() {
+	try {
+		items.forEach(async (item) => {
+			await db.item.create({
+				data: {
+					title: item.title,
+					description: item.description,
+					price: item.price
+				}
+			})
+		})
+	} catch (error) {
+		console.error({
+			error
+		})
+	}
+}
+
+
+export const getAllItems = async () => {
+	try {
+		const items = await db.item.findMany();
+		if (!items) {
+			await seedItems();
+		}
+		return items;
+	} catch (error) {
+		console.error({
+			error
+		})
+	}
+}
