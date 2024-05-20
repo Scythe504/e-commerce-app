@@ -1,5 +1,5 @@
-export default function Cart() {
-    return <div>
-        Cart Items
-    </div>
+import { Cart } from "@/components/cart/cart";
+
+export default function CartPage() {
+    return <Cart/>
 }

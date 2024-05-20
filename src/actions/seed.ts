@@ -106,6 +106,7 @@ async function seedItems() {
 
 export const getAllItems = async () => {
 	try {
+		// await seedItems();
 		const items = await db.item.findMany();
 		return items;
 	} catch (error) {

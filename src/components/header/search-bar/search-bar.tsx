@@ -2,40 +2,50 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ValidItems } from "./show-valid-items";
 import { useDebounce } from "@/hooks/useDebounce";
 import { searchItems } from "@/actions/search";
 import { Item } from "@prisma/client";
-import { motion } from "framer-motion";
+import { Modal } from "@/components/modal/skeleton";
 
 export const SearchBar = () => {
-    const [regex, setRegex] = useState('');
+    const [searchParam, setSeachParam] = useState('');
     const debouncedValue = useDebounce({
-        value: regex,
+        value: searchParam,
         delay: 500,
     });
     const [presentItems, setPresentItems] = useState<Item[]>([]);
-    useEffect(() => {
+    const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+    const fetchData = useCallback(() => {
         searchItems(debouncedValue).then((e) => {
             //@ts-ignore
             setPresentItems([...e?.success])
             console.log("e:", { e })
             return e;
         }).catch(e => console.log(e))
+    }, [])
+    useEffect(() => {
+        fetchData();
     }, [debouncedValue])
 
     return <div className="w-full">
         <div className="flex flex-row w-full">
             <div className="w-full">
-                <Input placeholder="Search Anything" onChange={(e) => setRegex(e.target.value)} className="w-full" />
-                {debouncedValue&& <motion.div 
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 exit={{ opacity: 0 }}
-                className="flex items-center justify-center relative h-fit">
-                    <ValidItems presentItems={presentItems} />
-                </motion.div>}
+                <Input placeholder="Search Anything"
+                    onChange={(e) => setSeachParam(e.target.value)}
+                    className="w-full"
+                    onFocus={() => setIsInputFocused(true)}
+                    ref={searchInputRef}
+                />
+                {isInputFocused &&debouncedValue.length > 0 && (
+                    <Modal
+                        isFocus={isInputFocused}
+                    >
+                        <ValidItems presentItems={presentItems} />
+                    </Modal>
+                )}
             </div>
             <Button variant="ghost">
                 <Search size={24} />
