@@ -21,7 +21,7 @@ model User {
   emailVerified      Boolean?      @default(false)
   dateOfVerification DateTime?
   // purchases          Purchase[]
-  Cart               Cart[]
+  Cart               Cart?
 }
 
 // model Purchase {
@@ -53,9 +53,9 @@ model Item {
   title       String
   description String?
   price       Float
-  cartId  String
+  cartId      String
   cart   Cart?  @relation(fields: [cartId], references: [id])
-  @@unique([id, cartId])
+  @@unique([id])
 }
 
 
