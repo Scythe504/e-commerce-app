@@ -1,10 +1,12 @@
 import { Button } from "../ui/button";
-import AddToCartButton from "./add-cart-button";
 
-const DetailsCard = ({ title, description }: {
+const DetailsCard = ({ title, description, handleClick }: {
     title: string,
     description: string | null
+    handleClick: () => {}
 }) => {
+
+
     return <div className="flex flex-col p-6 gap-2 overflow-hidden">
         <div className="h-3/4 w-full">
             <h1 className="text-3xl">
@@ -16,7 +18,11 @@ const DetailsCard = ({ title, description }: {
             </p>
         </div>
 
-        <AddToCartButton/>
+        <Button className="mt-4"
+            onClick={handleClick}
+        >
+            Add to cart
+        </Button>
     </div>
 }
 

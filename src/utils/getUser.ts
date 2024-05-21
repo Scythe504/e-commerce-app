@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import db from '@/db/prisma'
 
 export const getUserByEmail = async (email: string) => {
@@ -24,6 +25,34 @@ export const getUserById = async (id: string | undefined) => {
         return user;
     } catch (error) {
         console.error({error})
+        return null;
+    }
+}
+
+export const getUserCart = async ({userId}: {
+    userId : string,
+})=> {
+    try {
+        const cart = db.cart.findUnique({
+            where : {
+                userId
+            }, include : {
+                items : true
+            }
+        })
+        if (!cart) {
+            await db.cart.create({
+                data : {
+                    userId : userId
+                }
+            })
+        }
+
+        return cart;
+    } catch (error) {
+        console.log({
+            error
+        })
         return null;
     }
 }

@@ -1,8 +1,9 @@
 import DetailsCard from "./detail-card";
 
-const ProductCard = ({title, description}:{
+export const ProductCard = ({title, description, handleClick}:{
     title : string,
     description : string | null
+    handleClick : ()=> {}
 })=> {
     return  <div>
         <div className="flex flex-row w-full mx-12 overflow-hidden p-1 text-start">
@@ -13,11 +14,9 @@ const ProductCard = ({title, description}:{
         >
             Image
         </div>
-            <DetailsCard title={title} description={description}/>
+            <DetailsCard title={title} description={description} handleClick={handleClick}/>
         </div>
         <hr className="flex-grow border border-black mx-14"/>
     </div>
 
 }
-
-export default ProductCard;

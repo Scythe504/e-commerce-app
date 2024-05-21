@@ -21,7 +21,7 @@ model User {
   emailVerified      Boolean?      @default(false)
   dateOfVerification DateTime?
   // purchases          Purchase[]
-  Cart               Cart?
+  Cart               Cart[]
 }
 
 // model Purchase {
@@ -43,16 +43,17 @@ model User {
 //   purchase   Purchase @relation(fields: [purchaseId], references: [id])
 //   item       Item     @relation(fields: [itemId], references: [id])
 // }
+// Below lines where in Items Table
+// purchase    PurchaseItem[]
+  // purchaseId  String?
+  // Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
 
 model Item {
   id          String         @id @default(cuid())
   title       String
   description String?
   price       Float
-  // purchase    PurchaseItem[]
-  // purchaseId  String?
-  // Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
-  cartId  String?
+  cartId  String
   cart   Cart?  @relation(fields: [cartId], references: [id])
   @@unique([id, cartId])
 }
