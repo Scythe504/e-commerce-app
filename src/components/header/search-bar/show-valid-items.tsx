@@ -1,9 +1,5 @@
-"use client"
-import { searchItems } from "@/actions/search"
-import { ProductCard } from "@/components/item-lists/main-card"
-import { SearchList } from "@/components/item-lists/search-list"
+import { SearchList } from "@/components/items/search-list"
 import { Item } from "@prisma/client"
-import { useEffect, useState } from "react"
 
 export const ValidItems = ({ presentItems }: {
     presentItems: Item[]
@@ -11,8 +7,8 @@ export const ValidItems = ({ presentItems }: {
     console.log({ presentItems });
     return <div className="absolute w-full top-full h-fit z-30 flex flex-col">
         {presentItems.map((item, index) => {
-            if (index > 6) return;
-            return <SearchList key={item.id} title={item.title} />
+            if (index > 6) return ;
+            return <SearchList key={item.id} id={item.id} title={item.title} />
         }
         )}
     </div>

@@ -11,42 +11,43 @@ import { useState, useTransition } from "react";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form"
 import { z } from "zod";
+import { Textarea } from "@/components/ui/textarea";
 
 
-const AddItems = ()=>{
+const AddItems = () => {
     const [success, setSuccess] = useState<string | undefined>("")
     const [error, setError] = useState<string | undefined>("")
     const [isPending, startTransition] = useTransition()
     const form = useForm<z.infer<typeof itemDetailsSchema>>({
         resolver: zodResolver(itemDetailsSchema),
         defaultValues: {
-          title : "",
-          description : "",
-          price : ""
+            title: "",
+            description: "",
+            price: ""
         },
-      })
-      async function onSubmit (values : z.infer<typeof itemDetailsSchema>) {
-        
-        startTransition(()=>{
+    })
+    async function onSubmit(values: z.infer<typeof itemDetailsSchema>) {
+
+        startTransition(() => {
             publishProduct(values)
-            .then(data=>{
-                if(data.error) {
+                .then(data => {
+                    if (data.error) {
+                        form.reset();
+                        setError(data.error)
+                    }
+                    if (data.success) {
+                        form.reset();
+                        setSuccess(data.success);
+                    }
+                }).catch(e => {
                     form.reset();
-                    setError(data.error)
-                }
-                if(data.success) {
-                    form.reset();
-                    setSuccess(data.success);
-                }
-            }).catch(e=>{
-                form.reset();
-                console.error({e});
-                setError("Something went wrong")
-            })
+                    console.error({ e });
+                    setError("Something went wrong")
+                })
         })
     }
-    
-    
+
+
     return (<Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 p-8">
             <FormField
@@ -56,12 +57,12 @@ const AddItems = ()=>{
                     <FormItem>
                         <FormLabel>Title</FormLabel>
                         <FormControl>
-                            <Input 
-                            placeholder="Title of the Product"
-                             type="text"
-                              {...field}
-                disabled={isPending}
-                               />
+                            <Input
+                                placeholder="Title of the Product"
+                                type="text"
+                                {...field}
+                                disabled={isPending}
+                            />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -74,11 +75,10 @@ const AddItems = ()=>{
                     <FormItem>
                         <FormLabel>Description</FormLabel>
                         <FormControl>
-                            <Input 
-                            placeholder="description of the product" {...field} 
-                            type="text"
-                disabled={isPending}
-                />
+                            <Textarea
+                                placeholder="description of the product" {...field}
+                                disabled={isPending}
+                            />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -91,19 +91,19 @@ const AddItems = ()=>{
                     <FormItem>
                         <FormLabel>Price</FormLabel>
                         <FormControl>
-                            <Input 
-                            placeholder="Price of the item" 
-                            {...field } 
-                            type="number" 
-                            disabled={isPending}
-                        />
+                            <Input
+                                placeholder="Price of the item"
+                                {...field}
+                                type="number"
+                                disabled={isPending}
+                            />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                 )}
             />
-            <FormError message={error}/>
-            <FormSuccess message={success}/>
+            <FormError message={error} />
+            <FormSuccess message={success} />
             <Button
                 type="submit"
                 className="w-full"

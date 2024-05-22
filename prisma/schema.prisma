@@ -13,17 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id                 String       @id @default(cuid())
-  email              String       @unique
-  password           String
-  signInCredentials  methodSignin @default(EMAIL)
-  emailVerified      Boolean?      @default(false)
-  dateOfVerification DateTime?
-  // purchases          Purchase[]
-  Cart               Cart?
-}
-
 // model Purchase {
 //   id             String         @id @default(cuid())
 //   items_purchase String[]
@@ -45,24 +34,47 @@ model User {
 // }
 // Below lines where in Items Table
 // purchase    PurchaseItem[]
-  // purchaseId  String?
-  // Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
+// purchaseId  String?
+// Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
+
+model User {
+  id                 String       @id @default(cuid())
+  email              String       @unique
+  password           String
+  signInCredentials  methodSignin @default(EMAIL)
+  emailVerified      Boolean?     @default(false)
+  dateOfVerification DateTime?
+  // purchases          Purchase[]
+  Cart               Cart?
+  Reviews            Review[]
+}
 
 model Item {
-  id          String         @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
   description String?
   price       Float
   cart        Cart[]
+  review      Review[]
   @@unique([id])
 }
 
-
 model Cart {
-  id        String     @id @default(cuid())
-  userId    String     @unique
-  usersCart User       @relation(fields: [userId], references: [id])
-  items Item[]
+  id        String @id @default(cuid())
+  userId    String @unique
+  usersCart User   @relation(fields: [userId], references: [id])
+  items     Item[]
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  itemId     String
+  item       Item     @relation(fields: [itemId], references: [id])
+  content    String
+  rating     Int      
+  reviewerId String   @unique
+  reviewer   User     @relation(fields: [reviewerId], references: [id])
+  createdAt  DateTime @default(now())
 }
 
 enum methodSignin {

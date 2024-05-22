@@ -1,18 +1,11 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { getAllItems } from "@/actions/seed"
-import { ProductCard } from "@/components/item-lists/main-card";
+import { ProductCard } from "@/components/items/main-card";
 import { addToCart } from "@/actions/add-to-cart";
-import { Toast } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-
-type Item = {
-  id: string;
-  title: string;
-  description: string | null;
-  price: number;
-  cartId: string;
-}
+import Link from "next/link";
+import { Item } from "@prisma/client";
 
 
 export default function Items() {
@@ -52,12 +45,18 @@ export default function Items() {
   
 
   return <div className="text-center h-full w-full">
-    {items.map((item, index) => {
-      return <ProductCard key={item.id}
+    {items.map((item) => {
+      return <Link 
+        key={item.id}
+        href={`/item/${item.id}`}
+        target={"_self"}
+      >
+      <ProductCard 
        title={item.title} 
       description={item.description} 
       handleClick={()=>handleClick({item})}
       />
+      </Link>
     })}
   </div>
 }
