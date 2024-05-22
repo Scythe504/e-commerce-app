@@ -53,8 +53,7 @@ model Item {
   title       String
   description String?
   price       Float
-  cartId      String
-  cart   Cart?  @relation(fields: [cartId], references: [id])
+  cart        Cart[]
   @@unique([id])
 }
 

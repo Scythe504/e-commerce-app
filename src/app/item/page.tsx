@@ -31,8 +31,12 @@ export default function Items() {
   }, [])
   console.log("items:", { items });
   
-  const handleClick = async (itemId: string) => {
-    const addStatus = await addToCart(itemId);
+  const handleClick = async ({item}: {
+    item : Item
+  }) => {
+    const addStatus = await addToCart({
+      item
+    });
     if (addStatus?.success) {
       setSuccess(addStatus.success);
       toast({
@@ -52,7 +56,7 @@ export default function Items() {
       return <ProductCard key={item.id}
        title={item.title} 
       description={item.description} 
-      handleClick={()=>handleClick(item.id)}
+      handleClick={()=>handleClick({item})}
       />
     })}
   </div>

@@ -22,12 +22,15 @@ export const getCartItems = async () => {
         }
         const cartItems = await db.cart.findMany({
             where: {
-                userId: cart.userId
+                userId : user.id
             }, include: {
-                items: true
+                items : true
             }
         })
-
+        let idx = 0;
+        for (let i of cartItems) {
+            idx++;
+        }
         return { success: cartItems };
     } catch (error) {
         console.error({ error });

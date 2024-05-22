@@ -82,7 +82,6 @@ const items: item[] = [
 		price: 5000.20,
 
 	},
-
 ]
 
 async function seedItems() {
@@ -106,8 +105,12 @@ async function seedItems() {
 
 export const getAllItems = async () => {
 	try {
-		// await seedItems();
 		const items = await db.item.findMany();
+		if(items.length < 20) {
+			await seedItems();
+			const finalItems = await db.item.findMany();
+			return finalItems;
+		}
 		return items;
 	} catch (error) {
 		console.error({

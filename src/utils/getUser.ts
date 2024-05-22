@@ -22,6 +22,9 @@ export const getUserById = async (id: string | undefined) => {
                 id
             }
         });
+        if(!user) {
+            throw { error : "No user found"};
+        }
         return user;
     } catch (error) {
         console.error({error})

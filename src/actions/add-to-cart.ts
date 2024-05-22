@@ -2,42 +2,62 @@
 import { auth } from "@/auth"
 import db from "@/db/prisma"
 import { getUserById, getUserCart } from "@/utils/getUser"
+import { Cart, Item } from "@prisma/client"
 
 
-export const addToCart = async (itemId: string) => {
+export const addToCart = async ({item} : {
+    item : Item
+}) => {
     const session = await auth();
-    if (!session) {
-        return { error: "user not logged in" };
-    }
     try {
+        if (session === null) {
+            throw { error: "user not logged in" };
+        }
         const user = await getUserById(session.user?.id);
+        console.log({user});
         if (!user) {
-            return { error: "user not found, please log in, if is not" };
+            throw { error: "user not found, please log in, if is not" };
         }
         const cart = await getUserCart({
             userId: user.id
         });
+        console.log({cart});
+        let createdCart;
         if (cart === null) {
-            return { error: "some error occurred please try again later" };
+           createdCart = await db.cart.create({
+                data : {
+                    userId : user.id,
+                }
+            })
+        }
+        console.log({createdCart});
+        if (createdCart === undefined && cart === null) {
+            console.log("Something happended")
+            throw { error : "Cart not initialised, please try again later"}
         }
         const pushToCart = await db.cart.update({
             where: {
-                id: cart.id,
+                userId : user.id,
             }, data: {
                 items: {
                     connect: {
-                        id: itemId
+                        id : item.id,
+                        title : item.title,
+                        description : item.description,
+                        price : item.price,
                     }
                 }
             }
         })
+        console.log({pushToCart});
         if (pushToCart.userId === user.id) {
             return { success : "Item has been added to your cart" };
         }
+
     } catch (e) {
         console.error({
             e
         })
-        return { error : "Some error occurred please try again later" };
+        return { error : e as string };
     }
 }
