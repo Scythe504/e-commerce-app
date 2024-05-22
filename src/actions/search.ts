@@ -1,24 +1,31 @@
-"use server"
 import { Item } from "@prisma/client";
-import { getAllItems } from "./seed"
-import FuzzySearch from "fuzzy-search"
+import { getAllItems } from "./seed";
+import Fuse from "fuse.js";
 
-export const searchItems = async (regex: string)=> {
+export const searchItems = async (regex: string) => {
     try {
         const products = await getAllItems();
-        console.log(regex)
+        // TODO - Transfer the search using fuse to a client component, too many database calls are being made
+        console.log(regex);
         if (products) {
-            const searcher = new FuzzySearch(products, ['title', 'description'], {
-                caseSensitive : false,
-            })
-            const result: Item[] = searcher.search(regex);
-            if (!result) {
-                return { error : "No results found"}
+            const options = {
+                keys: ["title", "description"],
+                threshold: 0.6, // Adjust the threshold to control the fuzziness
+                minMatchCharLength: 3, // Minimum number of characters that must be matched
+                includeScore: true,
+            };
+            const fuse = new Fuse(products, options);
+            //@ts-ignore
+            const result: Fuse.FuseResult<Item>[] = fuse.search(regex);
+            if (!result || result.length === 0) {
+                return { error: "No results found" };
             }
-            return { success : result };
+            // Sort the results by score
+            result.sort((a, b) => a.score - b.score);
+            return { success: result.map((item) => item.item) };
         }
     } catch (error) {
-        console.error({error});
-        return { error : "Some error occured on our side" };
+        console.error({ error });
+        return { error: "Some error occurred on our side" };
     }
-}
+};

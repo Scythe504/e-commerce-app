@@ -25,6 +25,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.8",
+    "fuse.js": "^7.0.0",
     "fuzzy-search": "^3.2.1",
     "fuzzysearch": "^1.0.3",
     "jose": "^5.2.2",
