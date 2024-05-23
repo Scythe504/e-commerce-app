@@ -126,7 +126,7 @@ export default function LoginForm() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         className="flex flex-row items-center justify-center">
-        <p>Don't have an account?</p>
+        <p>Don&apos;t have an account?</p>
         <Button
           variant={"link"}
           disabled={isPending}

@@ -46,7 +46,7 @@ const AllReviews = ({ id }: {
         <ScrollArea className="w-full h-[500px]">
             <div className="h-full overflow-hidden w-full p-2">
                 {review.map((rev) => (
-                    <Card className="rounded-lg">
+                    <Card key={rev.id} className="rounded-lg">
                         <CardHeader className="flex flex-row w-full space-x-2">
                             {`User#${rev.reviewerId.slice(0, 9)}`}
                             <div className="flex ml-auto">

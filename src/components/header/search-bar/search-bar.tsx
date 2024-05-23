@@ -18,16 +18,13 @@ export const SearchBar = () => {
     const [presentItems, setPresentItems] = useState<Item[]>([]);
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const searchInputRef = useRef<HTMLInputElement>(null);
-    const fetchData = useEffect(() => {
+    useEffect(() => {
         searchItems(debouncedValue).then((e) => {
             //@ts-ignore
             setPresentItems([...e?.success])
             console.log("e:", { e })
             return e;
         }).catch(e => console.log(e))
-    }, [debouncedValue])
-    useEffect(() => {
-        fetchData;
     }, [debouncedValue])
 
     return <div className="w-full">
