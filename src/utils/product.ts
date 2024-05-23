@@ -1,20 +1,18 @@
 import db from "@/db/prisma"
 
-export const getAllReviews = async ({ itemId }: {
-    itemId : string
-})=> {
+export const getAllReviews = async (itemId : string)=> {
     try {
-        const review = await db.item.findMany({
+        const review = await db.item.findUnique({
             where : {
                 id : itemId
             }, include : {
                 review : true
             }
         });
-        
+        console.log(":?",{review});
         return review;
     } catch (error) {
         console.error("review",{error});
-        return null;
+        return { error : "No review Found"};
     }
 }

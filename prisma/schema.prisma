@@ -72,7 +72,7 @@ model Review {
   item       Item     @relation(fields: [itemId], references: [id])
   content    String
   rating     Int      
-  reviewerId String   @unique
+  reviewerId String
   reviewer   User     @relation(fields: [reviewerId], references: [id])
   createdAt  DateTime @default(now())
 }

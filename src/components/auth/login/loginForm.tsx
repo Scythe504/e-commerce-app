@@ -20,8 +20,6 @@ import { login, register } from "@/actions/authentication"
 import { FormSuccess } from "@/components/results/success"
 import { FormError } from "@/components/results/error"
 import { useRouter } from "next/navigation"
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
-import { signIn } from "next-auth/react"
 
 export default function LoginForm() {
   const [success, setSuccess] = useState<string | undefined>("")

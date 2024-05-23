@@ -17,3 +17,11 @@ export const itemDetailsSchema = z.object({
     description : z.string(),
     price : z.string().refine((val)=>!Number.isNaN(parseInt(val)))
 })
+
+export const reviewSchema = z.object({
+    id : z.string(),
+    rating : z.number().max(5, {
+        message : 'Rating cannot exceed 5*'
+    }),
+    content : z.string(),
+})

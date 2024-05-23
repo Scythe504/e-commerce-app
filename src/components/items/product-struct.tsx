@@ -1,4 +1,4 @@
-import { Item } from "@prisma/client"
+import { Item, Review } from "@prisma/client"
 import Image from "next/image"
 import watchImg from "../../../public/image.png"
 import { useEffect, useState } from "react"
@@ -6,6 +6,63 @@ import { getAllItems } from "@/actions/seed"
 import { useToast } from "../ui/use-toast"
 import { Button } from "../ui/button"
 import { addToCart } from "@/actions/add-to-cart"
+import { Card, CardContent, CardHeader } from "../ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "../ui/separator"
+import { Star } from "lucide-react"
+import { PostReview } from "../review/comment"
+import { getAllReviews } from "@/actions/review"
+
+
+
+
+const AllReviews = ({ id }: {
+    id: string
+}) => {
+    console.log({ id })
+    const [review, setReview] = useState<Review[]>([]);
+    useEffect(() => {
+        getAllReviews(id).then((resolve) => {
+            console.log({
+                resolve
+            })
+            if (resolve.success) {
+                const data = resolve.success;
+                let itemReview = data.review.flatMap(item => [item])
+                setReview([...itemReview]);
+                console.log({ itemReview })
+            }
+            // @ts-ignore
+        }).catch(e => {
+            console.error({ e });
+        })
+    }, [])
+
+    review.forEach((item) => {
+        console.log(item.content);
+    })
+
+    return <div className="w-full h-full">
+        <ScrollArea className="w-full h-[500px]">
+            <div className="h-full overflow-hidden w-full p-2">
+                {review.map((rev) => (
+                    <Card className="rounded-lg">
+                        <CardHeader className="flex flex-row w-full space-x-2">
+                            {`User#${rev.reviewerId.slice(0, 9)}`}
+                            <div className="flex ml-auto">
+                                {rev.rating}<Star />
+                            </div>
+                        </CardHeader>
+                        <CardContent>{rev.content}</CardContent>
+                        <Separator />
+                    </Card>
+                ))
+                }
+            </div >
+        </ScrollArea>
+        <PostReview id={id} />
+    </div>
+}
 
 export const ProductStruct = ({ id }: {
     id: string
@@ -32,7 +89,6 @@ export const ProductStruct = ({ id }: {
                     Item not found
                 </div>
             }
-            console.log({ item });
             setItem(item);
         })
     }, [])
@@ -65,7 +121,7 @@ export const ProductStruct = ({ id }: {
         <div className="lg:grid lg:grid-cols-2 h-full overflow-y-clip pb-40">
             <div className="flex justify-start items-start">
                 <Image src={watchImg} alt="watchImg"
-                    className="sticky top-20 h-[450px] w-full"
+                    className="sticky top-20 h-[450px] w-full pr-1"
                 />
             </div>
             <div className="flex flex-col space-y-4 p-8 h-full">
@@ -83,46 +139,11 @@ export const ProductStruct = ({ id }: {
                 </Button>
                 <div className="flex flex-col items-center">
                     <h1 className="text-4xl">Reviews</h1>
-                    <div className="w-full h-[300px] overflow-y-scroll ">
-                        <div>Review 1</div>
-                        <div>Review 3</div>
-                        <div>Review 1</div>
-                        <div>Review 4</div>
-                        <div>Review 1</div>
-                        <div>Review 3</div>
-                        <div>Review 1</div>
-                        <div>Review 4</div>
-                        <div>Review 1</div>
-                        <div>Review 3</div>
-                        <div>Review 1</div>
-                        <div>Review 4</div>
-                        <div>Review 1</div>
-                        <div>Review 3</div>
-                        <div>Review 1</div>
-                        <div>Review 4</div>
-                        <div>Review 1</div>
-                        <div>Review 3</div>
-                        <div>Review 1</div>
-                        <div>Review 4</div>
-                    </div>
+                    {/* Reviews Here */}
+                    <AllReviews id={item.id} />
                 </div>
             </div>
         </div>
         {/* TODO - OTHERS Sample Picture */}
-            <div className="gap-1 items-start w-full h-[100px] overflow-x-scroll overflow-y-clip flex flex-row justify-center bottom-0">
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-                <Image src={watchImg} alt="watch" height={100} />
-            </div>
     </div>
 }

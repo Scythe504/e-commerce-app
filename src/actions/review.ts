@@ -2,6 +2,23 @@
 import { auth } from "@/auth"
 import db from "@/db/prisma"
 
+export const getAllReviews = async (itemId: string) => {
+    try {
+        const review = await db.item.findUnique({
+            where: {
+                id: itemId
+            }, include: {
+                review: true
+            }
+        });
+        console.log(":?", { review });
+        return {success : review};
+    } catch (error) {
+        console.error("review", { error });
+        return { error: "No review Found" };
+    }
+}
+
 export const postReview = async ({ itemId, content, rating }: {
     itemId: string
     content: string
@@ -17,8 +34,8 @@ export const postReview = async ({ itemId, content, rating }: {
         if (session.user?.id === undefined) {
             return { error: "user not found please relogin" }
         }
-
-        await db.review.create({
+        console.log(session.user.id);
+        const review = await db.review.create({
             data: {
                 itemId: itemId,
                 content: content,
@@ -26,6 +43,8 @@ export const postReview = async ({ itemId, content, rating }: {
                 reviewerId: session.user.id
             }
         })
+
+        return { success: "Review Successfully Posted" }
     } catch (error) {
         console.error({ error })
         return { error: "Review could not be posted" };
