@@ -76,7 +76,7 @@ const AddItems = () => {
                         <FormLabel>Description</FormLabel>
                         <FormControl>
                             <Textarea
-                                placeholder="description of the product" {...field}
+                                placeholder="description of the product" {...field}                     
                                 disabled={isPending}
                             />
                         </FormControl>

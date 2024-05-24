@@ -1,29 +1,21 @@
+import { Star } from "lucide-react";
 import { Button } from "../ui/button";
 
-const DetailsCard = ({ title, description, handleClick }: {
+export const DetailsCard = ({ title, rating, totalReviews, handleClick }: {
     title: string,
-    description: string | null
+    rating: number,
+    totalReviews : number,
     handleClick: () => {}
 }) => {
-
-
-    return <div className="flex flex-col p-6 gap-2 overflow-hidden">
-        <div className="h-3/4 w-full">
-            <h1 className="text-3xl">
-                {title}
-            </h1>
-
-            <p className="text-md">
-                {description}
-            </p>
-        </div>
-
-        <Button className="mt-4"
-            onClick={handleClick}
-        >
-            Add to cart
-        </Button>
+    return <div className="flex flex-col p-6 gap-2 overflow-hidden h-full">
+    <div className="text-4xl w-full h-full pb-12 flex-grow-1 overflow-visible">
+        {title}
     </div>
+    <div className="flex flex-row">
+        {rating}<Star/>{`(${totalReviews})`}
+    </div>
+    <Button className="w-40" onClick={handleClick}>
+        Add to Cart
+    </Button>
+</div>
 }
-
-export default DetailsCard;

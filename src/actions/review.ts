@@ -2,13 +2,11 @@
 import { auth } from "@/auth"
 import db from "@/db/prisma"
 
-export const getAllReviews = async (itemId: string) => {
+export const getAllReviews = async () => {
     try {
-        const review = await db.item.findUnique({
-            where: {
-                id: itemId
-            }, include: {
-                review: true
+        const review = await db.item.findMany({
+            include : {
+                review : true
             }
         });
         console.log(":?", { review });

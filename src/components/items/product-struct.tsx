@@ -2,7 +2,7 @@ import { Item, Review } from "@prisma/client"
 import Image from "next/image"
 import watchImg from "../../../public/image.png"
 import { useEffect, useState } from "react"
-import { getAllItems } from "@/actions/seed"
+import { getAllItems } from "@/actions/getItem"
 import { useToast } from "../ui/use-toast"
 import { Button } from "../ui/button"
 import { addToCart } from "@/actions/add-to-cart"
@@ -22,13 +22,15 @@ const AllReviews = ({ id }: {
     console.log({ id })
     const [review, setReview] = useState<Review[]>([]);
     useEffect(() => {
-        getAllReviews(id).then((resolve) => {
+        getAllReviews().then((resolve) => {
             console.log({
                 resolve
             })
             if (resolve.success) {
                 const data = resolve.success;
-                let itemReview = data.review.flatMap(item => [item])
+                let itemReview = data
+                    .flatMap(item => item.review)
+                    .filter(item => item.itemId === id)
                 setReview([...itemReview]);
                 console.log({ itemReview })
             }
@@ -37,10 +39,6 @@ const AllReviews = ({ id }: {
             console.error({ e });
         })
     }, [])
-
-    review.forEach((item) => {
-        console.log(item.content);
-    })
 
     return <div className="w-full h-full">
         <ScrollArea className="w-full h-[500px]">

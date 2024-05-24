@@ -4,7 +4,7 @@ import { CartFooter } from "./cart-footer/cart-footer"
 import { CartItems } from "./cart-items/cart-item"
 import { useToast } from "@/components/ui/use-toast"
 import { Item } from "@prisma/client"
-import { getCartItems } from "@/actions/getCartItems"
+import { getCartItems } from "@/actions/getItem"
 
 
 export const MainCart = () => {

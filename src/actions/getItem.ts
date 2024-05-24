@@ -38,3 +38,14 @@ export const getCartItems = async () => {
     }
 
 }
+
+export const getAllItems = async () => {
+	try {
+		const items = await db.item.findMany();
+		return items;
+	} catch (error) {
+		console.error({
+			error
+		})
+	}
+}

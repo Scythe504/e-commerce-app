@@ -1,5 +1,5 @@
 import { Item } from "@prisma/client";
-import { getAllItems } from "./seed";
+import { getAllItems } from "./getItem";
 import Fuse from "fuse.js";
 
 export const searchItems = async (regex: string) => {
