@@ -1,4 +1,3 @@
-import * as noResult from "@/no-result.json"
 import { Card, CardContent } from "../ui/card"
 
 export const NoResultFound = () => {
