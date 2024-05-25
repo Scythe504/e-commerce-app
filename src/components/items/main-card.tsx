@@ -1,21 +1,21 @@
 import Image from "next/image";
 import { DetailsCard } from "./detail-card";
-import wathcImg from "../../../public/image.png"
 import { Separator } from "../ui/separator";
 
-export const ProductCard = ({ title, rating, totalReviews, handleClick }: {
+export const ProductCard = ({ title, rating, description, totalReviews, imageUrl, handleClick }: {
     title: string,
-    description: string | null,
+    description: string,
     rating: number,
-    totalReviews: number
+    totalReviews: number,
+    imageUrl: string,
     handleClick: () => {}
 }) => {
-
+    let image = `https://utfs.io/a/dvt2tqmx9d/${imageUrl}`
     return <div className="lg:px-40 flex flex-col w-full h-full">
         <div className="flex flex-row w-full mx-3 p-1 text-start h-full">
             <div className="w-[350px]">
                 <Image
-                    src={wathcImg}
+                    src={image}
                     alt="watchImg"
                     className="h-full object-contain"
                     height={350}
@@ -25,6 +25,7 @@ export const ProductCard = ({ title, rating, totalReviews, handleClick }: {
             <div className="flex-1 flex flex-col justify-between max-w-md object-contain">
                 <DetailsCard
                     title={title}
+                    description={description}
                     handleClick={handleClick}
                     rating={rating}
                     totalReviews={totalReviews}

@@ -38,13 +38,18 @@ const StarRating = ({ setRating, ratingValue }: {
 };
 
 export const PostReview = ({ id }: {
-    id: string
+    id: string | undefined
 }) => {
     const [comment, setComment] = useState("");
     const [rating, setRating] = useState(0);
     const { toast } = useToast();
 
     const onSubmit = async () => {
+        if(!id) {
+            return <div>
+                Loading...
+            </div>
+        }
         const review = await postReview({
             itemId: id,
             content: comment,

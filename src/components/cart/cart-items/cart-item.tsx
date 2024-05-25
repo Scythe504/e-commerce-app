@@ -1,46 +1,47 @@
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import watchImg from "../../../../public/image.png"
+import { BackgroundGradient } from "@/components/ui/background-gradient"
 export const CartItems = ({
     title,
     price,
     stock,
-    handleRemove
+    imageUrl,
+    handleRemove,
 }: {
     title: string,
     price: number,
     stock: number,
+    imageUrl : string,
     handleRemove: () => void
 }) => {
 
 
     let stockLeft: Readonly<string>;
-    if(stock > 5) {
+    if (stock > 5) {
         stockLeft = `In stock`
     } else {
         stockLeft = `Only ${stock} in stock available`
     }
-
-    return <div
-        className="p-3 w-[300px] h-fit shadow-md rounded-sm mx-2 my-2"
-    >
-        <div className="grid grid-rows-7 h-full w-full">
-            <Image src={watchImg} alt="watchImg" className="row-span-4 h-full mb-1" />
-            <div
-                className="row-span-2 overflow-clip text-xl font-semibold"
-            >
+    let image = `https://utfs.io/${process.env.UPLOADTHING_APP_ID}/${imageUrl}`
+    return (<div className="p-2">
+        <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900">
+            <Image
+                src={image}
+                alt="img"
+                height={400}
+                width={400}
+                className="object-contain"
+            />
+            <p className="text-lg sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200">
                 {title}
-            </div>
-            <div
-                className="row-span-1 text-xl font-semibold"
-            >
-                {price}
-            </div>
-            <div
-                className="row-span-1"
-            >
+            </p>
+            <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200">
+                &#8377;{price}
+            </p>
+            <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200">
                 {stockLeft}
-            </div>
+            </p>
             <div
                 className="flex flex-col items-center justify-center gap-1 row-span-2"
             >
@@ -57,6 +58,7 @@ export const CartItems = ({
                     Remove From Cart
                 </Button>
             </div>
-        </div>
-    </div>
+        </BackgroundGradient >
+    </div >
+    )
 }

@@ -2,7 +2,7 @@
 import { auth } from "@/auth"
 import db from "@/db/prisma"
 import { getUserById, getUserCart } from "@/utils/getUser"
-import { Cart, Item } from "@prisma/client"
+import { Item } from "@prisma/client"
 
 
 export const addToCart = async ({item} : {

@@ -89,8 +89,9 @@ export default function Items() {
       >
         <ProductCard
           title={item.title}
-          description={item.description}
+          description={item.description || ""}
           handleClick={() => handleClick({ item })}
+          imageUrl={item.image}
           rating={(!isNaN(sumRating[item.id]?.avgRating)) ? Number(sumRating[item.id]?.avgRating.toFixed(1)) : 0}
           totalReviews={(sumRating[item.id]?.totalRating)} />
       </Link>

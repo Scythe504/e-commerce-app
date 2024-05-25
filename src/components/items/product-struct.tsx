@@ -9,15 +9,16 @@ import { addToCart } from "@/actions/add-to-cart"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "../ui/separator"
-import { Star } from "lucide-react"
+import { Loader2, Star } from "lucide-react"
 import { PostReview } from "../review/comment"
 import { getAllReviews } from "@/actions/review"
-
+import HashLoader from "react-spinners/HashLoader"
+import { NoResultFound } from "../results/not-found"
 
 
 
 const AllReviews = ({ id }: {
-    id: string
+    id: string | undefined
 }) => {
     console.log({ id })
     const [review, setReview] = useState<Review[]>([]);
@@ -40,9 +41,16 @@ const AllReviews = ({ id }: {
         })
     }, [])
 
-    return <div className="w-full h-full">
-        <ScrollArea className="w-full h-[500px]">
-            <div className="h-full overflow-hidden w-full p-2">
+    if (review.length === 0) {
+        return <div className="p-4 text-center">
+            <NoResultFound />
+            <PostReview id={id} />
+        </div>
+    }
+
+    return (<div className="w-full h-full">
+        <ScrollArea className="w-full h-[300px]">
+            <div className="h-fit overflow-hidden w-full p-2">
                 {review.map((rev) => (
                     <Card key={rev.id} className="rounded-lg">
                         <CardHeader className="flex flex-row w-full space-x-2">
@@ -59,26 +67,35 @@ const AllReviews = ({ id }: {
             </div >
         </ScrollArea>
         <PostReview id={id} />
-    </div>
+    </div>)
 }
 
 export const ProductStruct = ({ id }: {
     id: string
 }) => {
-    const [item, setItem] = useState<Item>();
+    const [item, setItem] = useState<Item>({
+        id: "",
+        title: "",
+        description: "",
+        price: 0,
+        image: "",
+    });
     const [error, setError] = useState<string | undefined>(undefined);
     const [success, setSuccess] = useState('');
-
+    let [loading, setLoading] = useState(true);
+    let [color, setColor] = useState("#1105f7");
+    const [image, setImage] = useState("")
     const { toast } = useToast();
     useEffect(() => {
         getAllItems().then((data) => {
             console.log({ data });
+
             if (!data) {
                 toast({
                     description: "Item could not be found, Item might not be available or try again later"
                 })
                 return <div>
-                    Item not found
+                    No Item Found
                 </div>
             }
             const item = data.find((item) => item.id === id);
@@ -88,13 +105,10 @@ export const ProductStruct = ({ id }: {
                 </div>
             }
             setItem(item);
+            setImage(`https://utfs.io/a/dvt2tqmx9d/${item.image}`);
+            setLoading(false)
         })
     }, [])
-    if (item === undefined) {
-        return <div className="w-screen h-screen flex items-center justify-center">
-            404 | Not Found
-        </div>
-    }
 
     const handleClick = async ({ item }: {
         item: Item
@@ -115,33 +129,48 @@ export const ProductStruct = ({ id }: {
         }
     }
     console.log({ item })
-    return <div className="min-h-screen min-w-screen lg:mx-40 md:mx-20 m-4">
-        <div className="lg:grid lg:grid-cols-2 h-full overflow-y-clip pb-40">
-            <div className="flex justify-start items-start">
-                <Image src={watchImg} alt="watchImg"
-                    className="sticky top-20 h-[450px] w-full pr-1"
+    return <div>
+        {loading ?
+            <div className="flex items-center justify-center h-screen pb-40">
+                <HashLoader
+
+                    loading={loading}
+                    color={color}
+                    size={150}
                 />
             </div>
-            <div className="flex flex-col space-y-4 p-8 h-full">
-                <div className="text-4xl">
-                    {item?.title}
+            : (<div className="min-h-screen min-w-screen lg:mx-40 md:mx-20 m-4">
+                <div className="lg:grid lg:grid-cols-2 h-full overflow-y-clip pb-40">
+                    <div className="flex justify-start items-start">
+                        <Image src={image}
+                            alt="product image"
+                            width={350}
+                            height={400}
+                            className="sticky top-20 h-[450px] w-full pr-1"
+                        />
+                    </div>
+                    <div className="flex flex-col space-y-4 p-8 h-full">
+                        <div className="text-4xl">
+                            {item?.title}
+                        </div>
+                        <div className="text-4xl">
+                            &#x20b9; {item?.price}
+                        </div>
+                        <div>
+                            {item?.description}
+                        </div>
+                        <Button onClick={() => handleClick({ item })}>
+                            Add to Cart
+                        </Button>
+                        <div className="flex flex-col items-center">
+                            <h1 className="text-4xl">Reviews</h1>
+                            {/* Reviews Here */}
+                            <AllReviews id={item?.id} />
+                        </div>
+                    </div>
                 </div>
-                <div className="text-4xl">
-                    &#x20b9; {item?.price}
-                </div>
-                <div>
-                    {item?.description}
-                </div>
-                <Button onClick={() => handleClick({ item })}>
-                    Add to Cart
-                </Button>
-                <div className="flex flex-col items-center">
-                    <h1 className="text-4xl">Reviews</h1>
-                    {/* Reviews Here */}
-                    <AllReviews id={item.id} />
-                </div>
-            </div>
-        </div>
-        {/* TODO - OTHERS Sample Picture */}
+                {/* TODO - OTHERS Sample Picture */}
+            </div>)}
+
     </div>
 }

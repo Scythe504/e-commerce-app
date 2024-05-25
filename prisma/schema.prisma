@@ -53,6 +53,7 @@ model Item {
   id          String   @id @default(cuid())
   title       String
   description String?
+  image       String
   price       Float
   cart        Cart[]
   review      Review[]

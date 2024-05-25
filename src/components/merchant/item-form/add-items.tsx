@@ -12,24 +12,26 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form"
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
-
+import { UploadButton } from "@/utils/uploadThing"
+import { useToast } from "@/components/ui/use-toast";
 
 const AddItems = () => {
-    const [success, setSuccess] = useState<string | undefined>("")
-    const [error, setError] = useState<string | undefined>("")
-    const [isPending, startTransition] = useTransition()
+    const [success, setSuccess] = useState<string | undefined>("");
+    const { toast } = useToast();
+    const [error, setError] = useState<string | undefined>("");
+    const [isPending, startTransition] = useTransition();
+    const [imageKey, setImageKey] = useState("");
     const form = useForm<z.infer<typeof itemDetailsSchema>>({
         resolver: zodResolver(itemDetailsSchema),
         defaultValues: {
             title: "",
             description: "",
-            price: ""
+            price: "",
         },
     })
     async function onSubmit(values: z.infer<typeof itemDetailsSchema>) {
-
         startTransition(() => {
-            publishProduct(values)
+            publishProduct(values, imageKey)
                 .then(data => {
                     if (data.error) {
                         form.reset();
@@ -49,7 +51,7 @@ const AddItems = () => {
 
 
     return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 p-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 lg:mx-40 p-4  ">
             <FormField
                 control={form.control}
                 name="title"
@@ -76,7 +78,7 @@ const AddItems = () => {
                         <FormLabel>Description</FormLabel>
                         <FormControl>
                             <Textarea
-                                placeholder="description of the product" {...field}                     
+                                placeholder="description of the product" {...field}
                                 disabled={isPending}
                             />
                         </FormControl>
@@ -104,13 +106,33 @@ const AddItems = () => {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button
-                type="submit"
-                className="w-full"
-                disabled={isPending}
-            >
-                Submit
-            </Button>
+            <div className="flex flex-col items-center justify-center gap-2 w-full">
+                <div>
+                    <UploadButton
+                        endpoint={'imageUploader'}
+                        onClientUploadComplete={(res) => {
+                            res.forEach((r) => setImageKey(r.key));
+                            toast({
+                                description: "File has been uploaded",
+                            })
+                        }}
+                        onUploadError={(error: Error) => {
+                            console.error({ error })
+                            toast({
+                                description: "Some error occurred, failed to upload File"
+                            })
+                        }}
+                    >
+                    </UploadButton>
+                </div>
+                <Button
+                    type="submit"
+                    className=" w-36"
+                    disabled={isPending}
+                >
+                    Submit
+                </Button>
+            </div>
         </form>
     </Form>
     )

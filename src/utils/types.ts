@@ -15,7 +15,7 @@ export const loginSchema = z.object({
 export const itemDetailsSchema = z.object({
     title : z.string(),
     description : z.string(),
-    price : z.string().refine((val)=>!Number.isNaN(parseInt(val)))
+    price : z.string().refine((val)=>!Number.isNaN(parseInt(val))),
 })
 
 export const reviewSchema = z.object({

@@ -3,18 +3,22 @@ import db from "@/db/prisma"
 import { itemDetailsSchema } from "@/utils/types";
 import { z } from "zod"
 
-export const publishProduct = async (values : z.infer<typeof itemDetailsSchema>) => {
+export const publishProduct = async (values : z.infer<typeof itemDetailsSchema>, imageKey : string) => {
     const payload = itemDetailsSchema.safeParse(values);
     if (!payload.success) {
         return { error: "Invalid Inputs" }
     }
     const { title, description, price } = payload.data
     try {
+        if(imageKey === "") {
+            return { error : "Image not uploaded" };
+        }
         await db.item.createMany({
             data: {
                 title: title,
                 description: description,
-                price: Number(price)
+                price: Number(price),
+                image : imageKey
             }
         })
         return { success: "Product has been published" }
@@ -25,5 +29,5 @@ export const publishProduct = async (values : z.infer<typeof itemDetailsSchema>)
 }
 
 export const merchantLogin = ()=> {
-    //do the login logic for seller logic
+    //TODO - do the login logic for seller logic
 }
