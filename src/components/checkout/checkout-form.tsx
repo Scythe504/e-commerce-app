@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useTransition } from "react"
 import { Form, FormField, FormItem, FormLabel } from "../ui/form";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,10 +14,13 @@ import { Button } from "../ui/button";
 
 export const PaymentForm = ({ 
     children,
+    handleSubmit,
+    isPending
  }: {
     children : React.ReactNode,
+    handleSubmit : ()=> void,
+    isPending : any
 }) => {
-    const [isPending, setIsPending] = useState(false);
 
     const form = useForm<z.infer<typeof paymentSchema>>({
         resolver: zodResolver(paymentSchema),
@@ -32,8 +35,6 @@ export const PaymentForm = ({
             couponCode: ""
         },
     })
-
-    const handleSubmit = ()=> {}
 
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-2">

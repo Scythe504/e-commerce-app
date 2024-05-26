@@ -1,14 +1,17 @@
 "use server"
 import db from "@/db/prisma"
-import { getAllItems } from "./getItem"
+import { auth } from "@/auth"
 
 interface Purchase {
     itemIds: string[],
-    email: string
 }
 
-export const addPurchase = async ({ itemIds, email }: Purchase) => {
+export const addPurchase = async ({ itemIds }: Purchase) => {
+    const session = await auth();
     try {
+        if (!session?.user || !session) {
+            throw new Error("Not Logged In");
+        }
         const items = await db.item.findMany({
             where: {
                 id: {
@@ -23,15 +26,15 @@ export const addPurchase = async ({ itemIds, email }: Purchase) => {
 
         const purchase = await db.purchase.create({
             data: {
-                userEmail: email,
+                userId: session.user.id!,
                 items: {
-                    connect: items.map((item) => ({ 
+                    connect: items.map((item) => ({
                         id: item.id,
-                        title : item.title,
-                        description : item.description,
-                        price : item.price,
-                        image : item.image
-                     }))
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image
+                    }))
                 }
             },
             include: {
@@ -39,9 +42,9 @@ export const addPurchase = async ({ itemIds, email }: Purchase) => {
             }
         });
 
-        return true;
+        return { success : "Purchase Successfull" };
     } catch (error) {
         console.error({ error });
-        throw error;
+        throw error
     }
 }
