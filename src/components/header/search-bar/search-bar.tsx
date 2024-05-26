@@ -22,7 +22,7 @@ export const SearchBar = () => {
     const searchInputRef = useRef<HTMLInputElement>(null);
     useEffect(()=> {
         getAllItems().then(data=> {
-            setItems(prevItems => [...prevItems, ...data!])
+            setItems([...data!])
         })
     },[])
     useEffect(() => {

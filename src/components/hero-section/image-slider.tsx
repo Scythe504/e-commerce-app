@@ -6,13 +6,13 @@ import image from "@/images.json"
 import Link from "next/link";
 export function PromotionSlider() {
   const images = [
-    image.tech[2],
-    image.footwear[1],
-    image.tech[3],
-    image.footwear[0],
-    image.tech[0],
-    image.footwear[2],
-    image.tech[1]
+    image.tech["2"],
+    image.footwear["1"],
+    image.tech["3"],
+    image.footwear["0"],
+    image.tech["0"],
+    image.footwear["2"],
+    image.tech["1"]
   ];
   return (
     <ImagesSlider className="h-[40rem]" images={images}>
