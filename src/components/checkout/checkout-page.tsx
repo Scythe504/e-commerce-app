@@ -109,7 +109,7 @@ export const CheckoutPage = () => {
                         <TableBody>
                             {
                                 cartItem.map((item) => (
-                                    <TableRow>
+                                    <TableRow key={item.id}>
                                         <TableCell>{item.title}</TableCell>
                                         <TableCell className="text-right">1</TableCell>
                                         <TableCell className="text-right">&#8377;{item.price}</TableCell>
@@ -154,7 +154,7 @@ export const CheckoutPage = () => {
                                     <TableBody>
                                         {
                                             cartItem.map((item) => (
-                                                <TableRow>
+                                                <TableRow key={item.id}>
                                                     <TableCell>{item.title}</TableCell>
                                                     <TableCell className="text-right">1</TableCell>
                                                     <TableCell className="text-right">&#8377;{item.price}</TableCell>

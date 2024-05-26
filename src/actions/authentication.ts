@@ -21,7 +21,7 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
         if (!user) {
             return { error: "User Does Not Exist" }
         }
-        const isValidPassword = bcrypt.compare(password, user.password);
+        const isValidPassword = bcrypt.compare(password, user.password!);
         if (!isValidPassword) {
             return {
                 error: "Wrong Password",
