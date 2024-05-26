@@ -44,7 +44,7 @@ model User {
   signInCredentials  methodSignin @default(EMAIL)
   emailVerified      Boolean?     @default(false)
   dateOfVerification DateTime?
-  // purchases          Purchase[]
+  purchases          Purchase[]
   Cart               Cart?
   Reviews            Review[]
 }
@@ -57,7 +57,15 @@ model Item {
   price       Float
   cart        Cart[]
   review      Review[]
+  purchases   Purchase[]
   @@unique([id])
+}
+
+model Purchase {
+  id Int @id @default(autoincrement())
+  items Item[]
+  userEmail String 
+  user User @relation(fields: [userEmail], references: [email])
 }
 
 model Cart {
@@ -72,7 +80,7 @@ model Review {
   itemId     String
   item       Item     @relation(fields: [itemId], references: [id])
   content    String
-  rating     Int      
+  rating     Int
   reviewerId String
   reviewer   User     @relation(fields: [reviewerId], references: [id])
   createdAt  DateTime @default(now())

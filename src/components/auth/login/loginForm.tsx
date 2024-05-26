@@ -26,7 +26,6 @@ export default function LoginForm() {
   const [error, setError] = useState<string | undefined>("")
   const [isMethodLogin, setMethodLogin] = useState<boolean>(true)
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {

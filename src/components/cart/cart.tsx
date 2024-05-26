@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { Item } from "@prisma/client"
 import { getCartItems } from "@/actions/getItem"
 import { BackgroundGradient } from "../ui/background-gradient"
+import Link from "next/link"
 
 
 export const MainCart = () => {
@@ -48,16 +49,15 @@ export const MainCart = () => {
   return <div className="mx-2 lg:mx-8 pb-20 overflow-y-clip flex flex-col items-center">
     <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid:cols-1">
       {cartItems.map((item, index) =>
-
         <CartItems
           key={item.id}
+          id={item.id}
           title={item.title}
           price={item.price}
           stock={index % 5 + 1}
           imageUrl={item.image}
           handleRemove={handleRemove}
         />
-
       )}
     </div>
     <CartFooter price={totalPrice} />
