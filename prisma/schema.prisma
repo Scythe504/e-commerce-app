@@ -38,16 +38,78 @@ datasource db {
 // Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
 
 model User {
-  id                 String       @id @default(cuid())
-  email              String       @unique
-  password           String
-  signInCredentials  methodSignin @default(EMAIL)
-  emailVerified      Boolean?     @default(false)
-  dateOfVerification DateTime?
-  purchases          Purchase[]
-  Cart               Cart?
-  Reviews            Review[]
+  id            String    @id @default(cuid())
+  name          String?
+  username      String?
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  isTwoFactorEnabled Boolean @default(false)
+  accounts      Account[]
+  twoFactorConfirmation TwoFactorConfirmation?
+  Cart          Cart?
+  Purchase      Purchase[]
+  reviews       Review[]
 }
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id String @id @default(cuid())
+  email String 
+  token String
+  userId String 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires DateTime
+
+  @@unique([userId])
+}
+
 
 model Item {
   id          String     @id @default(cuid())

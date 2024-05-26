@@ -2,7 +2,8 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { ImagesSlider } from "@/components/ui/image-slider";
-import * as image from "@/images.json"
+import image from "@/images.json"
+import Link from "next/link";
 export function PromotionSlider() {
   const images = [
     image.tech[2],
@@ -33,7 +34,14 @@ export function PromotionSlider() {
             Find Quality Products Of  <br></br> any kind
         </motion.p>
         <button className="px-4 py-2 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white mx-auto text-center rounded-full relative mt-4">
-          <span>Buy Now</span>
+          <span>
+            <Link
+              href={`/item`}
+              target="_self"
+            >
+            Buy Now
+            </Link>
+          </span>
           <div className="absolute inset-x-0  h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
         </button>
       </motion.div>

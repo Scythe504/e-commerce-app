@@ -8,9 +8,11 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { searchItems } from "@/actions/search";
 import { Item } from "@prisma/client";
 import { Modal } from "@/components/modal/skeleton";
+import { getAllItems } from "@/actions/getItem";
 
 export const SearchBar = () => {
     const [searchParam, setSeachParam] = useState('');
+    const [items, setItems] = useState<Item[]>([])
     const debouncedValue = useDebounce({
         value: searchParam,
         delay: 500,
@@ -18,9 +20,13 @@ export const SearchBar = () => {
     const [presentItems, setPresentItems] = useState<Item[]>([]);
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const searchInputRef = useRef<HTMLInputElement>(null);
-    
+    useEffect(()=> {
+        getAllItems().then(data=> {
+            setItems(prevItems => [...prevItems, ...data!])
+        })
+    },[])
     useEffect(() => {
-        searchItems(debouncedValue).then((e) => {
+        searchItems(items, debouncedValue).then((e) => {
             //@ts-ignore
             setPresentItems([...e?.success])
             console.log("e:", { e })
@@ -33,7 +39,7 @@ export const SearchBar = () => {
             <div className="w-full">
                 <Input placeholder="Search Anything"
                     onChange={(e) => setSeachParam(e.target.value)}
-                    className="w-full"
+                    className="w-full hidden md:block"
                     onFocus={() => setIsInputFocused(true)}
                     ref={searchInputRef}
                 />

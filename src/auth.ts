@@ -1,5 +1,5 @@
 import NextAuth from "next-auth"
-import db from "@/db/prisma"
+import prisma from "@/db/prisma"
 import authConfig from "@/auth.config"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { getUserById } from "@/utils/getUser"
@@ -16,12 +16,11 @@ export const {
         error: "/auth/error"
     }, events: {
         async linkAccount({ user }) {
-            await db.user.update({
+            await prisma.user.update({
                 where: {
                     id: user.id
                 }, data: {
-                    emailVerified: true,
-                    dateOfVerification: new Date(),
+                    emailVerified : new Date(),
                 }
             })
         }
@@ -31,8 +30,8 @@ export const {
             if (account?.provider !== "credentials") return true;
             //@ts-ignore
             //prevent non-authorised email users to buy
-            // const existingUser = await getUserById(user.id);
-            // if(!existingUser) return false;
+            const existingUser = await getUserById(user.id);
+            if(!existingUser) return false;
             //2FA-logic
             return true
         },
@@ -64,7 +63,7 @@ export const {
             },
             
     },
-    adapter: PrismaAdapter(db),
+    adapter: PrismaAdapter(prisma),
     session: { strategy: "jwt" },
     ...authConfig
 })
