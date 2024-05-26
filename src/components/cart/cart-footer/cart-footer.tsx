@@ -18,7 +18,6 @@ export const CartFooter = ({
             <Button
                 className="ml-auto"
             >
-                {/* TODO - IMPLEMENT STRIPE */}
                 <Link
                     href="/checkout"
                     target="_self"

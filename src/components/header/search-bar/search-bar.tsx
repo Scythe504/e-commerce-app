@@ -18,6 +18,7 @@ export const SearchBar = () => {
     const [presentItems, setPresentItems] = useState<Item[]>([]);
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const searchInputRef = useRef<HTMLInputElement>(null);
+    
     useEffect(() => {
         searchItems(debouncedValue).then((e) => {
             //@ts-ignore

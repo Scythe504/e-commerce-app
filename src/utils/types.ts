@@ -34,7 +34,7 @@ export const paymentSchema = z.object({
     cardNumber: z.string().max(16,{
         message : "Please enter a valid Card Number"
     }).refine((val) => !Number.isNaN(parseInt(val))),
-    cvvNumber: z.string().max(4, {
+    cvvNumber: z.string().max(3, {
         message: "Please enter a valid CVV"
     }).refine((val)=> !Number.isNaN(parseInt(val))),
     BillingCity: z.string(),

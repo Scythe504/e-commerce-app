@@ -2,7 +2,7 @@
 import React from "react";
 import { ContainerScroll } from "../ui/container-scroll-animation";
 import Image from "next/image";
-import * as image from "@/images.json"
+import image from "@/images.json"
 
 export function HeroScrollDemo() {
 
@@ -14,7 +14,7 @@ export function HeroScrollDemo() {
         titleComponent={
           <>
             <h1 className="text-4xl font-semibold text-black dark:text-white">
-              Get The Best Products<br />
+              AND<br />
               <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
                 With The Best Prices
               </span>
