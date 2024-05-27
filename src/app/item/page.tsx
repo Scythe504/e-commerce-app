@@ -30,21 +30,21 @@ export default function Items() {
   useEffect(() => {
     getAllItems().then((e) => {
       //@ts-ignore
-      if(e?.length === 0) {
+      if (e?.length === 0) {
         toast({
-          description : "No items found"
+          description: "No items found"
         })
       } else if (e !== undefined) {
         setItems([...e])
       } else {
         toast({
-          description : "No items Found"
+          description: "No items Found"
         })
       }
-    }).catch(e =>{
-      console.error({e})
+    }).catch(e => {
+      console.error({ e })
       toast({
-        description : "Some error occurred"
+        description: "Some error occurred"
       })
     })
   }, [])
@@ -95,19 +95,14 @@ export default function Items() {
 
   return <div className="h-full w-full">
     {items.map((item) => {
-      return <Link
-        key={item.id}
-        href={`/item/${item.id}`}
-        target={"_self"}
-      >
-        <ProductCard
-          title={item.title}
-          description={item.description || ""}
-          handleClick={() => handleClick({ item })}
-          imageUrl={item.image}
-          rating={(!isNaN(sumRating[item.id]?.avgRating)) ? Number(sumRating[item.id]?.avgRating.toFixed(1)) : 0}
-          totalReviews={(sumRating[item.id]?.totalRating)} />
-      </Link>
+      return <ProductCard
+        title={item.title}
+        description={item.description || ""}
+        handleClick={() => handleClick({ item })}
+        imageUrl={item.image}
+        id={item.id}
+        rating={(!isNaN(sumRating[item.id]?.avgRating)) ? Number(sumRating[item.id]?.avgRating.toFixed(1)) : 0}
+        totalReviews={(sumRating[item.id]?.totalRating)} />
     })}
   </div>
 }

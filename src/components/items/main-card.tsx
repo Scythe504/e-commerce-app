@@ -2,10 +2,11 @@ import Image from "next/image";
 import { DetailsCard } from "./detail-card";
 import { Separator } from "../ui/separator";
 
-export const ProductCard = ({ title, rating, description, totalReviews, imageUrl, handleClick }: {
+export const ProductCard = ({ title, rating, id, description, totalReviews, imageUrl, handleClick }: {
     title: string,
     description: string,
     rating: number,
+    id: string,
     totalReviews: number,
     imageUrl: string,
     handleClick: () => {}
@@ -22,19 +23,22 @@ export const ProductCard = ({ title, rating, description, totalReviews, imageUrl
                     width={390}
                 />
             </div>
+
             <div className="flex-1 flex flex-col justify-between max-w-md object-contain">
                 <DetailsCard
                     title={title}
                     description={description}
                     handleClick={handleClick}
                     rating={rating}
+                    id={id}
                     totalReviews={totalReviews}
                 />
             </div>
+
         </div>
         <div className="w-full overflow-x-hidden">
             <Separator className="bg-white" />
         </div>
-    </div>
+    </div >
 
 }
