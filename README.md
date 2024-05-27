@@ -1,8 +1,8 @@
 **-------------------------------------------------------------------------------------------------------------------------**
-#About Project
-This is an e-commerce fullstack app i have built, with NextJs(Typescript), where user's can sell and buy others product(No real transactions). This is my first ever full stack project i have built by myself.
+# About Project
+## This is an e-commerce fullstack app i have built, with NextJs(Typescript), where user's can sell and buy others product(No real transactions). This is my first ever full stack project i have built by myself.
 
-#Features
+# Features
 - Typescript - The project is entirely built with typescript.
 - OAuth & Authentication - The project uses AuthJs Library(Next Auth v5) for authentication.
 - ORM - The project uses Prisma ORM with PostgreSQL for the database.
