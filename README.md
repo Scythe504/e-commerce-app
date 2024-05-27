@@ -19,6 +19,6 @@
   
 **This project is my first project hence it is very scrappy**
 # Playing around
-## You can play around the app very easily, you just have to login via email and password, or via Google Login, even if you use your real password it will be hashed and will not be visible to me.
+## You can explore the app very easily, you just have to login via email and password, or via Google Login, even if you use your real password it will be hashed and will not be visible to me.
 ## For the ``/checkout`` endpoint you can put any credentials in it for all of them except the card number and cvv they have to be 16 digits and 3 digits number respectively, your data will not be stored in database. The payment form is just for visual appearance.
 **-------------------------------------------------------------------------------------------------------------------------**
