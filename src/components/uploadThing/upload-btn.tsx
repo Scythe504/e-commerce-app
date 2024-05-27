@@ -1,10 +1,8 @@
 "use client";
-import { Rss } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 import { UploadButton } from "@/utils/uploadThing";
-import { ControllerRenderProps } from "react-hook-form";
-export const UploadImageButton = ({control} : {
-    control : any
+export const UploadImageButton = ({ control }: {
+    control: any
 }) => {
     const { toast } = useToast();
 
@@ -12,7 +10,7 @@ export const UploadImageButton = ({control} : {
         <UploadButton
             endpoint={'imageUploader'}
             onClientUploadComplete={(res) => {
-                control.onChange(res.flatMap(item=> item.key))
+                control.onChange(res.flatMap(item => item.key))
                 toast({
                     description: "File has been uploaded",
                 })

@@ -38,11 +38,6 @@ export const PurchaseList = () => {
     const { toast } = useToast();
     useEffect(() => {
         getPurchases().then((data) => {
-            if (data.result) {
-                toast({
-                    description: data.result
-                })
-            }
             if (data.success) {
                 setPurchase(data.success)
             }
@@ -57,52 +52,55 @@ export const PurchaseList = () => {
 
 
 
-    return (<div className="lg:px-40 px-2">{
+    return (<>{
         loading
             ? <div className="w-screen pb-20 h-screen flex items-center justify-center">
                 <ClipLoader
                     loading={loading}
                     color="#0000ff"
-                    size={150}
+                    size={100}
                 />
             </div>
             :
-            <Table className="">
-                <TableCaption>A list of your recent invoices.</TableCaption>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-[50px]">Invoice</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Method</TableHead>
-                        <TableHead>item_id</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead className="text-left">Amount</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {purchase.items.map((item) => (
-                        <TableRow key={purchase.id}>
-                            <TableCell className="font-medium">{`INV${purchase.id}`}</TableCell>
-                            <TableCell>Paid</TableCell>
-                            <TableCell>Card</TableCell>
-                            <TableCell>
-                                <Link
-                                    href={`/item/${item.id}`}
-                                    target="_blank"
-                                >
-                                    <span className="w-[10px] text-left underline">
-                                        {item.id}
-                                    </span>
-                                </Link>
-                            </TableCell>
-                            <TableCell className="text-left">{formatDate(purchase.purchasedAt)}</TableCell>
-                            <TableCell className="text-left">{item.price}</TableCell>
+            <div className="lg:px-48 px-4">
+
+                <Table className="">
+                    <TableCaption>A list of your recent invoices.</TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-[50px]">Invoice</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Method</TableHead>
+                            <TableHead>item_id</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead className="text-left">Amount</TableHead>
                         </TableRow>
-                    ))
-                    }
-                </TableBody>
-            </Table >
+                    </TableHeader>
+                    <TableBody>
+                        {purchase.items.map((item) => (
+                            <TableRow key={purchase.id}>
+                                <TableCell className="font-medium">{`INV${purchase.id}`}</TableCell>
+                                <TableCell>Paid</TableCell>
+                                <TableCell>Card</TableCell>
+                                <TableCell>
+                                    <Link
+                                        href={`/item/${item.id}`}
+                                        target="_blank"
+                                    >
+                                        <span className="w-[10px] text-left underline">
+                                            {item.id}
+                                        </span>
+                                    </Link>
+                                </TableCell>
+                                <TableCell className="text-left">{formatDate(purchase.purchasedAt)}</TableCell>
+                                <TableCell className="text-left">{item.price}</TableCell>
+                            </TableRow>
+                        ))
+                        }
+                    </TableBody>
+                </Table >
+            </div>
     }
-    </div>
+    </>
     )
 }

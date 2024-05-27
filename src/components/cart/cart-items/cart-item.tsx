@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import watchImg from "../../../../public/image.png"
 import { BackgroundGradient } from "@/components/ui/background-gradient"
 import Link from "next/link"
 export const CartItems = ({
@@ -48,22 +46,6 @@ export const CartItems = ({
                     {stockLeft}
                 </p>
             </Link>
-            <div
-                className="flex flex-col items-center justify-center gap-1 row-span-2"
-            >
-                <Button
-                    className="w-full"
-                    variant={"outline"}
-                >
-                    Buy Now
-                </Button>
-                <Button
-                    className="w-full"
-                    variant={"destructive"}
-                >
-                    Remove From Cart
-                </Button>
-            </div>
         </BackgroundGradient >
     </div >
     )

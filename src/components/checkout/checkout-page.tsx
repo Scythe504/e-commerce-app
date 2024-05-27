@@ -21,6 +21,7 @@ import { PaymentForm } from "./checkout-form";
 import { addToCart } from "@/actions/add-to-cart";
 import { addPurchase } from "@/actions/purchase";
 import { useToast } from "../ui/use-toast";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export const CheckoutPage = () => {
     const [cartItem, setCartItems] = useState<Item[]>([]);
@@ -80,7 +81,7 @@ export const CheckoutPage = () => {
     return (<div className="md:px-20 px-2"> {
         loading
             ? <div className="h-screen flex items-center justify-center pb-20">
-                <CircleLoader
+                <ClipLoader
                     loading={loading}
                     color={color}
                     size={150}

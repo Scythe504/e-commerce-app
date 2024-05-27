@@ -33,6 +33,7 @@ import {
 import { FaGithub } from "react-icons/fa"
 import { signOut } from "@/auth"
 import { SettingsPage } from "../settings/setting"
+import { share } from "@/utils/share-page"
 
 export function DropdownMenuDemo({ children }: {
     children: React.ReactNode
@@ -50,20 +51,15 @@ export function DropdownMenuDemo({ children }: {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <Link
-                        href={'/settings'}
+                        href={`/purchase`}
                         target="_self"
                     >
                         <DropdownMenuItem>
-                            <User className="mr-2 h-4 w-4" />
-                            Profile
-                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                            <CreditCard className="mr-2 h-4 w-4" />
+                            <span>Purchases</span>
+                            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </Link>
-                    <DropdownMenuItem>
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        <span>Purchases</span>
-                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                    </DropdownMenuItem>
                     <Link
                         href={`/cart`}
                         target="_self"
@@ -95,7 +91,7 @@ export function DropdownMenuDemo({ children }: {
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>
                                     <PlusCircle className="mr-2 h-4 w-4" />
-                                    <span>More...</span>
+                                        <span onClick={()=> share()}>More...</span>
                                 </DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
@@ -124,7 +120,7 @@ export function DropdownMenuDemo({ children }: {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <LogOut className="mr-2 h-4 w-4" />
-                        <SettingsPage />
+                    <SettingsPage />
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>

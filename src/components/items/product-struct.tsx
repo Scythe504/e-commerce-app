@@ -14,6 +14,7 @@ import { PostReview } from "../review/comment"
 import { getAllReviews } from "@/actions/review"
 import HashLoader from "react-spinners/HashLoader"
 import { NoResultFound } from "../results/not-found"
+import ClipLoader from "react-spinners/ClipLoader"
 
 
 
@@ -37,7 +38,7 @@ const AllReviews = ({ id }: {
     }, [])
 
     if (review.length === 0) {
-        return <div className="p-4 text-center">
+        return <div className="p-4 text-center w-full">
             <NoResultFound />
             <PostReview id={id} />
         </div>
@@ -125,8 +126,7 @@ export const ProductStruct = ({ id }: {
     return <div>
         {loading ?
             <div className="flex items-center justify-center h-screen pb-40">
-                <HashLoader
-
+                <ClipLoader
                     loading={loading}
                     color={color}
                     size={150}

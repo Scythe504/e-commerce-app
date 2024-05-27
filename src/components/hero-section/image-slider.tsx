@@ -37,7 +37,7 @@ export function PromotionSlider() {
               href={`/item`}
               target="_self"
             >
-            Buy Now
+            Check Items
             </Link>
           </span>
           <div className="absolute inset-x-0  h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />

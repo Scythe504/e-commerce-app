@@ -24,28 +24,64 @@ export const addPurchase = async ({ itemIds }: Purchase) => {
             throw new Error("No Items Found");
         }
 
-        const purchase = await db.purchase.create({
-            data: {
-                userId: session.user.id!,
-                items: {
-                    connect: items.map((item) => ({
-                        id: item.id,
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        image: item.image
-                    }))
-                }
-            },
-            include: {
-                items: true
+        const userPurchase = await db.purchase.findUnique({
+            where: {
+                userId: session.user.id,
             }
-        });
+        })
+
+        if (!userPurchase) {
+            await db.purchase.create({
+                data: {
+                    userId: session.user.id!,
+                    items: {
+                        connect: items.map((item) => ({
+                            id: item.id,
+                            title: item.title,
+                            description: item.description,
+                            price: item.price,
+                            image: item.image
+                        }))
+                    }
+                },
+                include: {
+                    items: true
+                }
+            });
+
+        } else {
+            await db.$transaction([
+                db.purchase.update({
+                    where: {
+                        userId: session.user.id,
+                    }, data: {
+                        items: {
+                            connect: items.map((item) => ({
+                                id: item.id,
+                                title: item.title,
+                                description: item.description,
+                                price: item.price,
+                                image: item.image
+                            }))
+                        }
+                    },
+                }),
+                db.cart.update({
+                    where: {
+                        userId: session.user.id
+                    }, data: {
+                        items: {
+                            set: []
+                        }
+                    }
+                })
+            ])
+        }
 
         return { success: "Purchase Successfull" };
     } catch (error) {
         console.error({ error });
-        return { error : "Purchase Unsuccessfull" };
+        return { error: "Purchase Unsuccessfull" };
     }
 }
 
@@ -56,17 +92,15 @@ export const getPurchases = async () => {
             throw new Error("Not logged in");
         }
         const id = session.user.id as string;
-        const purchases = await db.purchase.findUnique({
+        const purchase = await db.purchase.findUnique({
             where: {
                 userId: id,
             }, include: {
                 items: true
             }
         })
-        if (purchases?.items.length === 0) {
-            return { result: "No purchases" }
-        }
-        return { success: purchases };
+
+        return { success: purchase };
     } catch (error) {
         console.error({
             error
@@ -74,3 +108,5 @@ export const getPurchases = async () => {
         return { error: "Some error occurred" };
     }
 }
+
+

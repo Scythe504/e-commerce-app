@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import React from 'react';
 import * as z from 'zod'
 
