@@ -42,7 +42,7 @@ export default function Items() {
         })
       }
     }).catch(e =>{
-      console.log(e)
+      console.error({e})
       toast({
         description : "Some error occurred"
       })

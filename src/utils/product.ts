@@ -9,7 +9,6 @@ export const getAllReviews = async (itemId : string)=> {
                 review : true
             }
         });
-        console.log(":?",{review});
         return review;
     } catch (error) {
         console.error("review",{error});

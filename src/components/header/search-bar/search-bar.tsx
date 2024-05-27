@@ -29,9 +29,8 @@ export const SearchBar = () => {
         searchItems(items, debouncedValue).then((e) => {
             //@ts-ignore
             setPresentItems([...e?.success])
-            console.log("e:", { e })
             return e;
-        }).catch(e => console.log(e))
+        }).catch(e => console.error(e))
     }, [debouncedValue])
 
     return <div className="w-full">

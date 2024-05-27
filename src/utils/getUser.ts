@@ -53,7 +53,7 @@ export const getUserCart = async ({userId}: {
 
         return cart;
     } catch (error) {
-        console.log({
+        console.error({
             error
         })
         return null;

@@ -14,14 +14,12 @@ export const addToCart = async ({item} : {
             throw { error: "user not logged in" };
         }
         const user = await getUserById(session.user?.id);
-        console.log({user});
         if (!user) {
             throw { error: "user not found, please log in, if is not" };
         }
         const cart = await getUserCart({
             userId: user.id
         });
-        console.log({cart});
         let createdCart;
         if (cart === null) {
            createdCart = await db.cart.create({
@@ -30,9 +28,7 @@ export const addToCart = async ({item} : {
                 }
             })
         }
-        console.log({createdCart});
         if (createdCart === undefined && cart === null) {
-            console.log("Something happended")
             throw { error : "Cart not initialised, please try again later"}
         }
         const pushToCart = await db.cart.update({
@@ -50,7 +46,6 @@ export const addToCart = async ({item} : {
                 }
             }
         })
-        console.log({pushToCart});
         if (pushToCart.userId === user.id) {
             return { success : "Item has been added to your cart" };
         }

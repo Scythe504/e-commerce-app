@@ -59,14 +59,6 @@ export default function LoginForm() {
 
   }
   
-  if(isMethodLogin) {
-    console.log("Login Now")
-  } else {
-    console.log("Register Now")
-  }
-
-
-
   return (<Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
       <div className="flex items-center space-x-8">

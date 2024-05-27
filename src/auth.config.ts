@@ -21,7 +21,6 @@ export default {
                 const isPassword = bcrypt.compare(password, user.password);
 
                 if(!isPassword) return null;
-                console.log("user",{user});
                 return user;
             }
         }),

@@ -36,10 +36,6 @@ export const {
             return true
         },
         async session({ token, session }) {
-            console.log({
-                sessionToken: token,
-                session
-            })
             // if(session.user){
                 //     //@ts-ignore
                 //     session.user.customField = token.customField;

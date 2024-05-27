@@ -9,7 +9,6 @@ export const getAllReviews = async () => {
                 review : true
             }
         });
-        console.log(":?", { review });
         return {success : review};
     } catch (error) {
         console.error("review", { error });
@@ -32,7 +31,6 @@ export const postReview = async ({ itemId, content, rating }: {
         if (session.user?.id === undefined) {
             return { error: "user not found please relogin" }
         }
-        console.log(session.user.id);
         const review = await db.review.create({
             data: {
                 itemId: itemId,

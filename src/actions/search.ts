@@ -5,7 +5,6 @@ import Fuse from "fuse.js";
 export const searchItems = async (products: Item[], regex: string) => {
     try {
         // TODO - Transfer the search using fuse to a client component, too many database calls are being made
-        console.log(regex);
         if (products) {
             const options = {
                 keys: ["title", "description"],

@@ -20,20 +20,15 @@ import { NoResultFound } from "../results/not-found"
 const AllReviews = ({ id }: {
     id: string | undefined
 }) => {
-    console.log({ id })
     const [review, setReview] = useState<Review[]>([]);
     useEffect(() => {
         getAllReviews().then((resolve) => {
-            console.log({
-                resolve
-            })
             if (resolve.success) {
                 const data = resolve.success;
                 let itemReview = data
                     .flatMap(item => item.review)
                     .filter(item => item.itemId === id)
                 setReview([...itemReview]);
-                console.log({ itemReview })
             }
             // @ts-ignore
         }).catch(e => {
@@ -88,7 +83,6 @@ export const ProductStruct = ({ id }: {
     const { toast } = useToast();
     useEffect(() => {
         getAllItems().then((data) => {
-            console.log({ data });
 
             if (!data) {
                 toast({
@@ -128,7 +122,6 @@ export const ProductStruct = ({ id }: {
             })
         }
     }
-    console.log({ item })
     return <div>
         {loading ?
             <div className="flex items-center justify-center h-screen pb-40">
