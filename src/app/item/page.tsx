@@ -96,6 +96,7 @@ export default function Items() {
   return <div className="h-full w-full">
     {items.map((item) => {
       return <ProductCard
+        key={item.id}
         title={item.title}
         description={item.description || ""}
         handleClick={() => handleClick({ item })}
