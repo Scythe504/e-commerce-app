@@ -9,8 +9,6 @@ export function PromotionSlider() {
     image.tech["2"],
     image.footwear["1"],
     image.tech["3"],
-    image.footwear["0"],
-    image.tech["0"],
     image.footwear["2"],
     image.tech["1"]
   ];

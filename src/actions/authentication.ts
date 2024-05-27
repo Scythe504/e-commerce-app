@@ -5,7 +5,7 @@ import { loginSchema } from "@/utils/types"
 import bcrypt from 'bcryptjs'
 import db from '@/db/prisma'
 import { z } from "zod"
-import { signIn } from "@/auth"
+import { auth, signIn } from "@/auth"
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 
 export const login = async (values: z.infer<typeof loginSchema>) => {
@@ -76,5 +76,20 @@ export const register = async (values: z.infer<typeof loginSchema>) => {
         return {
             error: "Some error occurred",
         }
+    }
+}
+
+export const getLoginStatus = async ()=> {
+    const session = await auth();
+    try {
+        if(!session?.user || !session) {
+            return { error : "Not logged in" };
+        }
+        const image = session.user.image
+
+        return { success : image }
+    } catch (error) {
+        console.error({error})
+        return { noImage : "No image found" };
     }
 }
