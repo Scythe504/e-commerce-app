@@ -36,14 +36,16 @@ export const CheckoutPage = () => {
             const data = (res.success);
             if (data) {
                 let sum = 0;
-                data[0].items.flatMap((item, idx) => {
-                    setCartItems([{ //@ts-ignore
-                        id : item.id,
-                        title: item.title,
-                        description : item.description,
-                        price: item.price,
-                        image : item.image
-                    }])
+                data.items.map((item) => {
+                    setCartItems((prevItem) => [
+                        ...prevItem
+                        , {
+                            id: item.id,
+                            title: item.title,
+                            description: item.description,
+                            price: item.price,
+                            image: item.image
+                        }])
                     sum += item.price
                 })
                 setSumTotal(sum);
@@ -52,27 +54,27 @@ export const CheckoutPage = () => {
         }).catch(e => console.error({ e }))
     }, [])
 
-    const handleSubmit = ()=> {
-        startTransition(async ()=> {
+    const handleSubmit = () => {
+        startTransition(async () => {
             try {
-                const id_arr = cartItem.map(item=> item.id)
-                if(id_arr.length === 0) {
+                const id_arr = cartItem.map(item => item.id)
+                if (id_arr.length === 0) {
                     toast({
-                        description : "No items being Bought"
+                        description: "No items being Bought"
                     })
                     throw new Error("No items Being Bought")
                 }
                 const data = await addPurchase({
-                    itemIds : id_arr
+                    itemIds: id_arr
                 });
-                if(data.success) {
+                if (data.success) {
                     toast({
-                        description : data.success
+                        description: data.success
                     })
                 }
             } catch (error) {
                 toast({
-                    description : "Some Error Occurred"
+                    description: "Some Error Occurred"
                 })
             }
         })

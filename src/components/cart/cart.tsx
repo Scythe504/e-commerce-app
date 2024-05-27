@@ -31,7 +31,7 @@ export const MainCart = () => {
       } else if (!data.success) {
         setError("Cart Items could not be fetched");
       } else {
-        let items: Item[] = (data.success)[0].items.flatMap((it, idx) => [
+        let items: Item[] = (data.success).items.flatMap((it, idx) => [
           {
             id: it.id,
             title: it.title,

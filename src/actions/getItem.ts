@@ -2,7 +2,6 @@
 import db from "@/db/prisma"
 import { auth } from "@/auth"
 import { getUserById } from "@/utils/getUser"
-import { Cart, Item } from "@prisma/client"
 
 export const getCartItems = async () => {
     const userSession = await auth()
@@ -20,17 +19,13 @@ export const getCartItems = async () => {
         if (!cart) {
             return { error: "Cart items could not be found, please try again later" };
         }
-        const cartItems = await db.cart.findMany({
+        const cartItems = await db.cart.findUnique({
             where: {
                 userId : user.id
             }, include: {
                 items : true
             }
         })
-        let idx = 0;
-        for (let i of cartItems) {
-            idx++;
-        }
         return { success: cartItems };
     } catch (error) {
         console.error({ error });
