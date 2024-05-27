@@ -11,12 +11,11 @@ export const DetailsCard = ({ title, description, rating, totalReviews, handleCl
     return <div className="flex flex-col p-6 gap-2 overflow-hidden h-full">
         <br />
         <br></br>
-    <div className="text-4xl w-full h-full pb-12 flex-grow-1">
+    <div className="text-4xl w-full h-full pb-12 flex-grow-1 line-clamp-2">
         {title}
         <br />
         <br />
-        <br />
-        <p className="text-xl lg:block hidden">{description}</p>
+        <p className="text-xl lg:block hidden overflow-ellipsis h-[305px]">{description.trim()}</p>
     </div>
     
     <div className="flex flex-row">
