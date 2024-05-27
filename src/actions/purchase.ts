@@ -42,9 +42,35 @@ export const addPurchase = async ({ itemIds }: Purchase) => {
             }
         });
 
-        return { success : "Purchase Successfull" };
+        return { success: "Purchase Successfull" };
     } catch (error) {
         console.error({ error });
-        throw error
+        return { error : "Purchase Unsuccessfull" };
+    }
+}
+
+export const getPurchases = async () => {
+    const session = await auth();
+    try {
+        if (!session || !session.user) {
+            throw new Error("Not logged in");
+        }
+        const id = session.user.id as string;
+        const purchases = await db.purchase.findUnique({
+            where: {
+                userId: id,
+            }, include: {
+                items: true
+            }
+        })
+        if (purchases?.items.length === 0) {
+            return { result: "No purchases" }
+        }
+        return { success: purchases };
+    } catch (error) {
+        console.error({
+            error
+        })
+        return { error: "Some error occurred" };
     }
 }

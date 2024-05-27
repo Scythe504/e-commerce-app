@@ -46,7 +46,7 @@ export const {
                 return session;
             },
             async jwt({ token }) {
-                // console.log({token})
+                //  ({token})
                 // token.customField = 'testtoken'
                 if (!token.sub) {
                     return token

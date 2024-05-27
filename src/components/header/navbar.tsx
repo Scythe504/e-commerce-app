@@ -11,7 +11,7 @@ export default function Navbar() {
                     href={`/`}
                     target="_self"
                 >
-                    <span className="w-fullnp">
+                    <span className="w-full">
                         NeoCom
                     </span>
                 </Link>

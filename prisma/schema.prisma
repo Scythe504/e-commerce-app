@@ -38,19 +38,19 @@ datasource db {
 // Purchase    Purchase?      @relation(fields: [purchaseId], references: [id])
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  username      String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  isTwoFactorEnabled Boolean @default(false)
-  accounts      Account[]
+  id                    String                 @id @default(cuid())
+  name                  String?
+  username              String?
+  email                 String?                @unique
+  emailVerified         DateTime?
+  password              String?
+  image                 String?
+  isTwoFactorEnabled    Boolean                @default(false)
+  accounts              Account[]
   twoFactorConfirmation TwoFactorConfirmation?
-  Cart          Cart?
-  Purchase      Purchase[]
-  reviews       Review[]
+  Cart                  Cart?
+  Purchase              Purchase[]
+  reviews               Review[]
 }
 
 model Account {
@@ -73,43 +73,42 @@ model Account {
 }
 
 model VerificationToken {
-  id String @id @default(cuid())
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model PasswordResetToken {
-  id String @id @default(cuid())
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model TwoFactorToken {
-  id String @id @default(cuid())
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model TwoFactorConfirmation {
-  id String @id @default(cuid())
-  email String 
-  token String
-  userId String 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String   @id @default(cuid())
+  email   String
+  token   String
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expires DateTime
 
   @@unique([userId])
 }
-
 
 model Item {
   id          String     @id @default(cuid())
@@ -125,10 +124,11 @@ model Item {
 }
 
 model Purchase {
-  id     Int    @id @default(autoincrement())
-  items  Item[]
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  id          Int       @id @default(autoincrement())
+  items       Item[]
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id])
+  purchasedAt DateTime @default(now())
 }
 
 model Cart {
@@ -139,13 +139,13 @@ model Cart {
 }
 
 model Review {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   itemId     String
-  item       Item     @relation(fields: [itemId], references: [id])
+  item       Item      @relation(fields: [itemId], references: [id])
   content    String
   rating     Int
   reviewerId String
-  reviewer   User     @relation(fields: [reviewerId], references: [id])
+  reviewer   User      @relation(fields: [reviewerId], references: [id])
   createdAt  DateTime @default(now())
 }
 
