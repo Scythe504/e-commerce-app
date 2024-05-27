@@ -1,4 +1,3 @@
-import { CartButton } from "./cartbutton";
 import { SignInButton } from "./loginbutton";
 import { SearchBar } from "./search-bar/search-bar";
 

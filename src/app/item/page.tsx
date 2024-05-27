@@ -30,10 +30,23 @@ export default function Items() {
   useEffect(() => {
     getAllItems().then((e) => {
       //@ts-ignore
-      setItems(prevItems => [...prevItems, ...e])
-      console.log("e:", { e })
-      return e;
-    }).catch(e => console.log(e))
+      if(e?.length === 0) {
+        toast({
+          description : "No items found"
+        })
+      } else if (e !== undefined) {
+        setItems([...e])
+      } else {
+        toast({
+          description : "No items Found"
+        })
+      }
+    }).catch(e =>{
+      console.log(e)
+      toast({
+        description : "Some error occurred"
+      })
+    })
   }, [])
 
   const handleClick = async ({ item }: {

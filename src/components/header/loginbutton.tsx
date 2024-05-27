@@ -9,7 +9,6 @@ import { getLoginStatus } from "@/actions/authentication"
 const Profile = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [image, setImage] = useState<string>("");
-
     useEffect(() => {
         getLoginStatus().then((data) => {
             if (data.success) {
@@ -19,7 +18,7 @@ const Profile = () => {
                 setIsLoggedIn(false);
             }
         })
-    }, [window.location])
+    }, [])
 
     return (<>
         {!isLoggedIn
