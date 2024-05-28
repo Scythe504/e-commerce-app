@@ -8,6 +8,7 @@ import Navbar from "@/components/header/navbar"
 import { Toaster } from "@/components/ui/toaster"
 import "@uploadthing/react/styles.css";
 import { ourFileRouter } from "./api/uploadthing/core"
+import { Analytics } from "@vercel/analytics/react"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: Readonly<{
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
         {children}
+        <Analytics/>
         <Toaster />
       </body>
     </html>
